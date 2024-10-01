@@ -9,8 +9,8 @@ O objetivo do trabalho é implementar um sistema de entregas que conecta os usu�
 - status dos pedidos do usuário 
 - sistema de avaliação da entrega, do produto e do fornecedor
 
-### Membros da equipe e papel
-Beatriz Reis Gama Barbosa: desenvolvedor front-end <br>
+### Membros da equipe e papéis
+Beatriz Reis Gama Barbosa: desenvolvedor back-end <br>
 Izadora Monkem Ganem: desenvolvedor front-end <br> 
 João Lucas Simões Moreira: desenvolvedor fullstack <br> 
 
