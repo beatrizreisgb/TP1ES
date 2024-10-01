@@ -17,4 +17,4 @@ João Lucas Simões Moreira: desenvolvedor fullstack <br>
 ### Tecnologias
 - Front-end: HTML, CSS e TypeScript
 - Back-end: Node e TypeScript (gestão: Postman)
-- Banco de dados: SQLite + Prisma (gestão: Beekeeper)
+- Banco de dados: SQLite + Prisma (gestão: Beekeeper / Prisma Studio)
