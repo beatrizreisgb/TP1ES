@@ -1,0 +1,31 @@
+{
+  "name": "tp1es",
+  "version": "1.0.0",
+  "description": "Sistema de logística JibLog",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsnd --rs  --respawn --transpile-only --exit-child index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.17.1",
+    "prisma": "^5.20.0",
+    "ts-node-dev": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.1",
+    "@types/node": "^22.7.5",
+    "typescript": "^5.6.3"
+  }
+}
