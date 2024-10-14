@@ -33,4 +33,14 @@ router.post('/create', async(req: Request, res: Response, next: NextFunction) =>
 	}
 });
 
+router.delete('/delete/:email', async(req: Request, res: Response, next: NextFunction) => {
+	try{
+		await UserService.deleteUser(req.params.email); // + para number
+		res.json('Usuário deletado');
+	}
+	catch(error){
+		next(error);
+	}
+});
+
 export default router;

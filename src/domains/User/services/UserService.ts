@@ -31,6 +31,16 @@ class UserService{
 
 		return users;
 	}
+
+	async deleteUser(email: string){
+		const deletedUser = await prisma.user.delete({
+			where:{
+				email: email,
+			}
+		});
+
+		return deletedUser;
+	}
 }
 
 export default new UserService();
