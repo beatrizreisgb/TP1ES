@@ -18,3 +18,12 @@ model User{
   password String
   role     String
 }
+
+model Owner{
+  id       Int @id @default(autoincrement())
+  name     String 
+  email    String @unique
+  photo    String?
+  password String
+  role     String
+}

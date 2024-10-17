@@ -33,6 +33,16 @@ router.post('/create', async(req: Request, res: Response, next: NextFunction) =>
 	}
 });
 
+router.put('/update/:email', async(req: Request, res: Response, next: NextFunction) => {
+	try{
+		await UserService.updateUser(req.params.email, req.body);
+		res.json('Usuário atualizado');
+	}
+	catch(error){
+		next(error);
+	}
+});
+
 router.delete('/delete/:email', async(req: Request, res: Response, next: NextFunction) => {
 	try{
 		await UserService.deleteUser(req.params.email); // + para number

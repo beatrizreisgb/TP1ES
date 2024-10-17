@@ -32,6 +32,23 @@ class UserService{
 		return users;
 	}
 
+	async updateUser(email: string, body: User){
+		const updatedUser = await prisma.user.update({
+			where:{
+				email: email,
+			},
+			data:{
+				email: body.email,
+				name: body.name,
+				password: body.password,
+				photo: body.photo,
+				role: body.role,
+			}
+		});
+
+		return updatedUser;
+	}
+
 	async deleteUser(email: string){
 		const deletedUser = await prisma.user.delete({
 			where:{
