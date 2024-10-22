@@ -8,7 +8,7 @@ class UserService{
 				email: body.email,
 				name: body.name,
 				password: body.password,
-				photo: body.photo,
+				address: body.address,
 				role: body.role,
 			}
 		});
@@ -41,7 +41,7 @@ class UserService{
 				email: body.email,
 				name: body.name,
 				password: body.password,
-				photo: body.photo,
+				address: body.address,
 				role: body.role,
 			}
 		});

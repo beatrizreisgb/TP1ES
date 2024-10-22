@@ -5,18 +5,19 @@ const router = Router();
 
 router.get('/', async(req: Request, res: Response, next: NextFunction) => {
 	try{
-		const users = await UserService.findUsers();
-		res.json(users);
+		const owners = await OwnerService.findOwners();
+		res.json(owners);
 	}
 	catch(error){
 		next(error);
 	}
 });
+
 //localhost:3000/joaolucas@email.com
 router.get('/:email', async(req: Request, res: Response, next: NextFunction) => { 
 	try{
-		const user = await UserService.findByEmail(req.params.email);
-		res.json(user);
+		const owner = await OwnerService.findByEmail(req.params.email);
+		res.json(owner);
 	}
 	catch(error){
 		next(error);
@@ -25,8 +26,8 @@ router.get('/:email', async(req: Request, res: Response, next: NextFunction) => 
 
 router.post('/create', async(req: Request, res: Response, next: NextFunction) => {
 	try{
-		await UserService.create(req.body);
-		res.json('Usuário criado com sucesso!');
+		await OwnerService.create(req.body);
+		res.json('Proprietário criado com sucesso!');
 	}
 	catch(error){
 		next(error);
@@ -35,8 +36,8 @@ router.post('/create', async(req: Request, res: Response, next: NextFunction) =>
 
 router.put('/update/:email', async(req: Request, res: Response, next: NextFunction) => {
 	try{
-		await UserService.updateUser(req.params.email, req.body);
-		res.json('Usuário atualizado');
+		await OwnerService.updateOwner(req.params.email, req.body);
+		res.json('Proprietário atualizado');
 	}
 	catch(error){
 		next(error);
@@ -45,8 +46,8 @@ router.put('/update/:email', async(req: Request, res: Response, next: NextFuncti
 
 router.delete('/delete/:email', async(req: Request, res: Response, next: NextFunction) => {
 	try{
-		await UserService.deleteUser(req.params.email); // + para number
-		res.json('Usuário deletado');
+		await OwnerService.deleteOwner(req.params.email);
+		res.json('Proprietário deletado');
 	}
 	catch(error){
 		next(error);

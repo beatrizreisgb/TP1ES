@@ -8,7 +8,6 @@ class OwnerService{
 				email: body.email,
 				name: body.name,
 				password: body.password,
-				photo: body.photo,
 				role: body.role,
 			}
 		});
@@ -26,13 +25,13 @@ class OwnerService{
 		return owner;
 	}
 
-	async findowners(){
+	async findOwners(){
 		const owners = await prisma.owner.findMany();
 
 		return owners;
 	}
 
-	async updateowner(email: string, body: owner){
+	async updateOwner(email: string, body: Owner){
 		const updatedowner = await prisma.owner.update({
 			where:{
 				email: email,
@@ -41,7 +40,6 @@ class OwnerService{
 				email: body.email,
 				name: body.name,
 				password: body.password,
-				photo: body.photo,
 				role: body.role,
 			}
 		});
@@ -49,7 +47,7 @@ class OwnerService{
 		return updatedowner;
 	}
 
-	async deleteowner(email: string){
+	async deleteOwner(email: string){
 		const deletedowner = await prisma.owner.delete({
 			where:{
 				email: email,
