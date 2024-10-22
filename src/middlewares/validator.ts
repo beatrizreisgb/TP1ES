@@ -1,15 +1,15 @@
 // verificar implementação
 
-export const checkRole = (roles: string[]) => {
+export const checkUserRole = (expectedRole: string) => {
     return (req: Request, res: Response, next: NextFunction) => {
-        try{
-            let errorMessage = '';
-            if (roles.includes(userRoles.PREMIUM_USER)) {
-                errorMessage = ' Se você acabou de se tornar um Usuário Premium e deveira poder realizar essa ação, tente logar novamente no sistema.';
+        try {
+            const userRole = req.user.role;
+            if (userRole !== expectedRole) {
+                console.log(`Error: User does not have the required role. Expected: ${expectedRole}, but got: ${userRole}`);
+                return res.status(401).json(`You don't have permission to perform this action. Required role: ${expectedRole}`);
             }
-            !roles.includes(req.user.role) ? res.status(401).json('Você não tem permissão para realizar essa ação!' + errorMessage) : next();
-        }
-        catch(error){
+            next(); 
+        } catch (error) {
             next(error);
         }
     };
