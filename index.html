@@ -1,37 +1,107 @@
 <!DOCTYPE html>
-<html lang="pt-br"> 
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8"> 
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JibLog</title>
-</head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
 
-<style>
-
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
-
-    head{
         header {
-            background-color: #333;
-            color: #177757;
-            padding: 10px 0;
+            background-color: #177757;
+            color: #fff;
+            padding: 20px 0;
             text-align: center;
         }
-    }
 
-</style>
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #fff;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #177757;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #0f5c3d;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        main h4 {
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        footer {
+            background-color: #177757;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
 <body>
 
     <header>
-        <h1> Bem vindo ao JibLog</h1>
-        <p> Nós somos uma empresa de logística </p>
+        <h1>Bem-vindo à JibLog</h1>
+        <h3>Sua Solução Logística de Confiança!</h3>
     </header>
+
+    <nav>
+        <a href="#home">Início</a>
+        <a href="#pedido">Rastrear Pedidos</a>
+        <a href="#cadastro">Cadastro</a>
+        <a href="#conta">Minha Conta</a>
+    </nav>
+
+    <main>
+        <h4>Nós somos uma empresa especializada em serviços de logística</h4>
+
+        <ul>
+            <li><strong>Transporte Nacional e Internacional:</strong> Leve suas mercadorias para onde precisam ir, sem complicações.</li>
+            <li><strong>Armazenagem Segura:</strong> Nossas instalações são seguras e bem organizadas, garantindo que seus produtos estejam sempre protegidos.</li>
+            <li><strong>Logística Otimizada:</strong> Entregamos não apenas o que você precisa, mas quando você precisa. Nossa taxa de pontualidade é uma das melhores do setor.</li>
+            <li><strong>Tecnologia de Ponta:</strong> Utilizamos ferramentas de rastreamento que permitem a você acompanhar o status das suas entregas a qualquer momento.</li>
+            <li><strong>Padrões Rigorosos:</strong> Implementamos rigorosos padrões de qualidade em todas as etapas do processo, desde a coleta até a entrega final.</li>
+        </ul>
+    </main>
+
+    <footer>
+        <p>JibLog &copy; 2024</p>
+    </footer>
 
 </body>
 </html>
