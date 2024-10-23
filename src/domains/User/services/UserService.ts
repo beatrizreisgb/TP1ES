@@ -1,14 +1,21 @@
 import prisma from '../../../../config/client';
 import { User } from '@prisma/client';
+import { hash } from 'bcrypt';
 
 class UserService{
+
+	async encryptPassword(password: string) {
+        const saltRounds = 10;
+        return await hash(password, saltRounds);
+    }
+
 	async create(body: User){
 		const user = await prisma.user.create({
 			data: {
 				email: body.email,
 				name: body.name,
-				password: body.password,
-				address: body.address,
+				password: await this.encryptPassword(body.password),
+				address: +body.address,
 				role: body.role,
 			}
 		});
@@ -33,6 +40,7 @@ class UserService{
 	}
 
 	async updateUser(email: string, body: User){
+		// if (body.role ) completar com loggedUser
 		const updatedUser = await prisma.user.update({
 			where:{
 				email: email,
@@ -40,10 +48,11 @@ class UserService{
 			data:{
 				email: body.email,
 				name: body.name,
-				password: body.password,
-				address: body.address,
+				password: await this.encryptPassword(body.password),
+				address: +body.address,
 				role: body.role,
 			}
+
 		});
 
 		return updatedUser;
