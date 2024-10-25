@@ -1,3 +1,4 @@
+import { loginMiddleware, logoutMiddleware, verifyJWT, notLoggedIn } from '../../../middlewares/authentication';
 import UserService from '../services/UserService';
 import { Router, Request, Response, NextFunction } from 'express';
 
@@ -52,5 +53,9 @@ router.delete('/delete/:email', async(req: Request, res: Response, next: NextFun
 		next(error);
 	}
 });
+
+router.post('/login', notLoggedIn, loginMiddleware);
+
+router.post('/logout', verifyJWT, logoutMiddleware);
 
 export default router;

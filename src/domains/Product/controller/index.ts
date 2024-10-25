@@ -1,11 +1,11 @@
-import OwnerService from '../services/OwnerService';
+import ProductService from '../services/ProductService';
 import { Router, Request, Response, NextFunction } from 'express';
 
 const router = Router();
 
 router.get('/', async(req: Request, res: Response, next: NextFunction) => {
 	try{
-		const owners = await OwnerService.findOwners();
+		const owners = await ProductService.findProducts();
 		res.json(owners);
 	}
 	catch(error){
@@ -14,9 +14,9 @@ router.get('/', async(req: Request, res: Response, next: NextFunction) => {
 });
 
 //localhost:3000/joaolucas@email.com
-router.get('/:email', async(req: Request, res: Response, next: NextFunction) => { 
+router.get('/:id', async(req: Request, res: Response, next: NextFunction) => { 
 	try{
-		const owner = await OwnerService.findByEmail(req.params.email);
+		const owner = await ProductService.findById(req.params.id);
 		res.json(owner);
 	}
 	catch(error){
@@ -26,7 +26,7 @@ router.get('/:email', async(req: Request, res: Response, next: NextFunction) => 
 
 router.post('/create', async(req: Request, res: Response, next: NextFunction) => {
 	try{
-		await OwnerService.create(req.body);
+		await ProductService.create(req.body);
 		res.json('Proprietário criado com sucesso!');
 	}
 	catch(error){
@@ -34,9 +34,9 @@ router.post('/create', async(req: Request, res: Response, next: NextFunction) =>
 	}
 });
 
-router.put('/update/:email', async(req: Request, res: Response, next: NextFunction) => {
+router.put('/update/:id', async(req: Request, res: Response, next: NextFunction) => {
 	try{
-		await OwnerService.updateOwner(req.params.email, req.body);
+		await ProductService.updateProduct(req.params.id, req.body);
 		res.json('Proprietário atualizado');
 	}
 	catch(error){
@@ -44,9 +44,9 @@ router.put('/update/:email', async(req: Request, res: Response, next: NextFuncti
 	}
 });
 
-router.delete('/delete/:email', async(req: Request, res: Response, next: NextFunction) => {
+router.delete('/delete/:id', async(req: Request, res: Response, next: NextFunction) => {
 	try{
-		await OwnerService.deleteOwner(req.params.email);
+		await ProductService.deleteProduct(req.params.id);
 		res.json('Proprietário deletado');
 	}
 	catch(error){
