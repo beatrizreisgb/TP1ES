@@ -9,14 +9,20 @@ class UserService{
         return await hash(password, saltRounds);
     }
 
-	async create(body: User){
+	async create(body: User, role: string = 'user'){
+		const address_string = body.address.toString();
+		var regex = /\d{8}/;
+
+		if (!regex.test(address_string)) {
+			throw new Error("Esse CEP não é válido.");
+		}
 		const user = await prisma.user.create({
 			data: {
 				email: body.email,
 				name: body.name,
 				password: await this.encryptPassword(body.password),
 				address: +body.address,
-				role: body.role,
+				role: role,
 			}
 		});
 

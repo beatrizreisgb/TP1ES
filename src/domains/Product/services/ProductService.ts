@@ -2,13 +2,16 @@ import prisma from '../../../../config/client';
 import { Product } from '@prisma/client'; 
 
 class ProductService{
-	async create(body: Product){
+	async create(body: Product, userId: number){
+		const owner = await prisma.owner.findFirst({where : {userId: userId}});
+
 		const product = await prisma.product.create({
 			data: {
 				name: body.name,
 				description: body.description,
 				price: +body.price,
-				ownerId: body.ownerId,
+				ownerId: owner.id,
+				location: +body.location,
 			}
 		});
 
@@ -25,6 +28,15 @@ class ProductService{
 		return product;
 	}
 
+	async findProductsByOwner(id: number){
+		const owner = await prisma.owner.findFirst({where: {userId: id}});
+
+		const products = await prisma.product.findMany({where: {ownerId: owner.id}});
+
+		return products;
+	}
+
+
 	async findProducts(){
 		const products = await prisma.product.findMany();
 
@@ -40,6 +52,7 @@ class ProductService{
 				name: body.name,
 				description: body.description,
 				price: +body.price,
+				location: +body.location,
 			}
 		});
 

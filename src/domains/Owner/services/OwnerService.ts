@@ -1,16 +1,18 @@
 import prisma from '../../../../config/client';
-import { Owner } from '@prisma/client'; 
+import UserService from '../../User/services/UserService';
+import { Owner, User} from '@prisma/client'; 
 
 class OwnerService{
-	async create(body: Owner){
+	async create(body: User){
+		let user = await UserService.create(body, 'owner');
+
 		const owner = await prisma.owner.create({
 			data: {
-				email: body.email,
-				name: body.name,
-				password: body.password,
-				role: body.role,
+				userId: user.id,
 			}
 		});
+
+		await prisma.user.update({where: {id: user.id}, data: {ownerId: owner.id}});
 
 		return owner;
 	}
@@ -26,7 +28,7 @@ class OwnerService{
 	}
 
 	async findOwners(){
-		const owners = await prisma.owner.findMany();
+		const owners = await prisma.user.findMany({where:{role: 'owner'}});
 
 		return owners;
 	}

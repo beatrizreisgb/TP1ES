@@ -4,6 +4,10 @@ import cors, { CorsOptions } from 'cors';
 import cookieParser from 'cookie-parser';
 import UserRouter from '../src/domains/User/controller/index';
 import OwnerRouter from '../src/domains/Owner/controller/index';
+import ProductRouter from '../src/domains/Product/controller/index';
+import OrderRouter from '../src/domains/Order/controller/index';
+import { errorHandler } from '../src/middlewares/errorHandler';
+
 
 dotenv.config();
 
@@ -23,6 +27,10 @@ app.use(express.urlencoded({
 }));
 
 app.use('/api/users', UserRouter);
-app.use('/api/owners', OwnerRouter);
+app.use('/api/owners', OwnerRouter); 
+app.use('/api/products', ProductRouter);
+app.use('/api/orders', OrderRouter);
+
+app.use(errorHandler);
 
 export default app;

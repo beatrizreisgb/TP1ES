@@ -5,7 +5,6 @@ class OrderService{
 	async create(body: Order){
 		const order = await prisma.order.create({
 			data: {
-				code: body.code,
 				payment: body.payment,
 				delivery: body.delivery,
 				userId: body.userId,
@@ -24,6 +23,12 @@ class OrderService{
 		});
 
 		return order;
+	}
+
+	async findOrdersByUser(id: number){
+		const orders = await prisma.order.findMany({where: {userId: id}});
+
+		return orders;
 	}
 
 	async findOrders(){
