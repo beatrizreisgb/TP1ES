@@ -42,7 +42,6 @@ class OwnerService{
 				email: body.email,
 				name: body.name,
 				password: body.password,
-				role: body.role,
 			}
 		});
 
@@ -50,13 +49,35 @@ class OwnerService{
 	}
 
 	async deleteOwner(email: string){
-		const deletedowner = await prisma.owner.delete({
-			where:{
-				email: email,
-			}
-		});
+		const user = await prisma.user.findFirst({where:{email: email}});
+		// await prisma.owner.delete({where:{userId: user.id}});
 
-		return deletedowner;
+		// const deletedUser = await prisma.user.delete({
+		// 	where:{
+		// 		id: user.id,
+		// 	}
+		// });
+
+
+		await prisma.$transaction([
+			prisma.product.deleteMany({
+				where: {
+					ownerId: user.id,
+				},
+			}),
+			prisma.owner.delete({
+				where: {
+					userId: user.id,
+				},
+			}),
+			prisma.user.delete({
+				where: {
+					id: user.id,
+				},
+			})
+		]);
+
+		return;
 	}
 }
 

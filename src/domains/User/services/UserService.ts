@@ -46,7 +46,6 @@ class UserService{
 	}
 
 	async updateUser(email: string, body: User){
-		// if (body.role ) completar com loggedUser
 		const updatedUser = await prisma.user.update({
 			where:{
 				email: email,
@@ -56,7 +55,6 @@ class UserService{
 				name: body.name,
 				password: await this.encryptPassword(body.password),
 				address: +body.address,
-				role: body.role,
 			}
 
 		});
