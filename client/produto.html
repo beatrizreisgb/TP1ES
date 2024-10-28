@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <html lang="pt-br"> 
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>JibLog</title>
+    </head>
+</html>
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    header{
+        color: #fff;
+        background-color: #177757;
+        text-align: center;
+        padding: 20px;
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+        background-color: #fff;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        }
+
+        nav a {
+        margin: 0 15px;
+        text-decoration: none;
+        color: #177757;
+        font-weight: bold;
+        }
+
+        nav a:hover {
+        color: #0f5c3d;
+    }
+
+    main {
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+        }
+
+    footer{
+        background-color: #177757;
+        text-align: center;
+        padding: 10px;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+</style>
+<header>
+    <h1>JibLog</h1>
+    <img src="Captura de tela 2024-10-22 172936.png" alt="logo JibLog" width="170" > 
+</header>
+
+<nav>
+    <a href="index.html">Início</a>
+    <a href="pedido">Rastrear Pedidos</a>
+    <a href="login.html">Login</a>
+    <a href="conta.html">Minha Conta</a>
+</nav>
+
+<body>
+    <div id="produto"></div>
+    <script>
+        let product={
+            "name": "bbalarina",
+            "address": 30575110
+        }
+        let ftr_html=`
+        <label for="name"> NOME:</label> 
+        ${product.name}
+        <br>
+        <label for="address"> LOCALIZAÇÃO:
+        ${product.address}
+        `
+        document.getElementById("produto").innerHTML=ftr_html
+    </script>
+    <footer>
+        <p>JibLog &copy; 2024</p>
+    </footer>
+</body>
+</html>
