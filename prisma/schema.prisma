@@ -14,9 +14,9 @@ model User {
   password String
   address  Int
   role     String
+  ownerId  Int?
   orders   Order[]
   owner    Owner?
-  ownerId  Int?
 }
 
 model Owner {

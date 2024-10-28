@@ -13,7 +13,6 @@ router.get('/', async(req: Request, res: Response, next: NextFunction) => {
 	}
 });
 
-//localhost:3000/joaolucas@email.com
 router.get('/:email', async(req: Request, res: Response, next: NextFunction) => { 
 	try{
 		const owner = await OwnerService.findByEmail(req.params.email);

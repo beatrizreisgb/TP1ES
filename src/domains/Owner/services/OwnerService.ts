@@ -50,14 +50,6 @@ class OwnerService{
 
 	async deleteOwner(email: string){
 		const user = await prisma.user.findFirst({where:{email: email}});
-		// await prisma.owner.delete({where:{userId: user.id}});
-
-		// const deletedUser = await prisma.user.delete({
-		// 	where:{
-		// 		id: user.id,
-		// 	}
-		// });
-
 
 		await prisma.$transaction([
 			prisma.product.deleteMany({

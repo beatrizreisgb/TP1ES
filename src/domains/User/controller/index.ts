@@ -1,5 +1,4 @@
 import { loginMiddleware, logoutMiddleware, verifyJWT, notLoggedIn } from '../../../middlewares/authentication';
-import { checkAddress } from '../../../middlewares/validate_input';
 import UserService from '../services/UserService';
 import { Router, Request, Response, NextFunction } from 'express';
 

@@ -1,6 +1,8 @@
 import prisma from '../../../../config/client';
 import { User } from '@prisma/client';
 import { hash } from 'bcrypt';
+import { InvalidParamError } from '../../../../errors/InvalidParamError';
+import { QueryError } from '../../../../errors/QueryError';
 
 class UserService{
 
@@ -10,11 +12,14 @@ class UserService{
     }
 
 	async create(body: User, role: string = 'user'){
+		if (await this.findByEmail(body.email)) {
+			throw new QueryError("Esse email já está cadastrado.");
+		}
 		const address_string = body.address.toString();
 		var regex = /\d{8}/;
 
 		if (!regex.test(address_string)) {
-			throw new Error("Esse CEP não é válido.");
+			throw new InvalidParamError("Esse CEP não é válido.");
 		}
 		const user = await prisma.user.create({
 			data: {

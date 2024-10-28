@@ -5,6 +5,9 @@ import { NextFunction } from 'express';
 import UserService from '../domains/User/services/UserService';
 import userRoles from '../../utils/constants/userRoles';
 import { compare } from 'bcrypt';
+import { TokenError } from '../../errors/TokenError';
+import { InvalidParamError } from '../../errors/InvalidParamError';
+import { LoginError } from '../../errors/LoginError';
 
 function generateJWT(user: User, res: Response) {
     const body = {
@@ -38,7 +41,7 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction) {
             req.user = decoded.user;
         }
         if (req.user == null) {
-            res.json('Você precisa estar logado para realizar essa ação!');
+            throw new TokenError('Você precisa estar logado para realizar essa ação!');
         }
         next();
     } catch (error) {
@@ -51,13 +54,13 @@ export async function loginMiddleware(req: Request, res: Response, next: NextFun
         let user = await UserService.findByEmail(req.body.email);
 
         if (user == null) {
-            res.json('E-mail incorreto!');
+            throw new InvalidParamError('E-mail incorreto!');
         }
 
         const matchingPassword = await compare(req.body.password, user.password);
 
         if (!matchingPassword) {
-            res.json('Senha incorreta!');
+            throw new InvalidParamError('Senha incorreta!');
         }
         generateJWT(user, res);
 
@@ -73,7 +76,7 @@ export async function logoutMiddleware(req: Request, res: Response, next: NextFu
     try {
         const token = cookieExtractor(req);
         if(!token){
-            res.json('Você não está logado no sistema!');
+            throw new TokenError('Você não está logado no sistema!');
         }
         res.clearCookie('jwt');
         res.status(200).json('Logout realizado com sucesso!');
@@ -90,7 +93,7 @@ export function notLoggedIn(req: Request, res: Response, next: NextFunction) {
         if (token) {
             const decoded = verify(token, process.env.SECRET_KEY || '');
             if (decoded) {
-                res.json('Você já está logado no sistema!');
+                throw new LoginError('Você já está logado no sistema!');
             }
         }
         next();
