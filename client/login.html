@@ -60,7 +60,7 @@
 <body>
     <header>
         <h1>JibLog</h1>
-        <img src="Captura de tela 2024-10-22 172936.png" alt="logo JibLog" width="170" > 
+        <img src="logo.png" alt="logo JibLog" width="170" > 
     </header>
     
     <nav>
@@ -73,9 +73,45 @@
     <main>
         <h2>Login:</h2>
     
-        <form>
-            <label for="username">Usuário:</label>
-            <input type="text" id="username" name="username">
+        <script>
+            // var form = document.getElementById("loginform");
+            // function handleForm(event) {  
+            // }     
+            // form.addEventListener("submit", handleForm);  
+            
+            function login(){
+                event.preventDefault(); 
+                let email = document.getElementById("email").value;
+                let password = document.getElementById("password").value;
+                
+                let url = "http://localhost:3030/api/users/login";
+
+                let data = {
+                    email: email,
+                    password: password
+                };
+                
+                fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.error){
+                        alert(data.error);
+                    } else {
+                        alert("Login realizado com sucesso!");
+                        window.location.href = "conta.html";
+                    }
+                })
+            }
+        </script>
+        <form id="loginform" onsubmit="login()">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email">
             <br><br>
             <label for="login-password">Senha:</label>
             <input type="password" id="password" name="password">
@@ -83,7 +119,6 @@
             <input type="submit" value="Entrar">
             <br><br>
         </form>
-
         <nav>
             <a href="cadastro.html"> Clique aqui se ainda não realizou seu cadastro</a>
         </nav>

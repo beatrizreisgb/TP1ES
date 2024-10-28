@@ -8,7 +8,6 @@ import ProductRouter from '../src/domains/Product/controller/index';
 import OrderRouter from '../src/domains/Order/controller/index';
 import { errorHandler } from '../src/middlewares/errorHandler';
 
-
 dotenv.config();
 
 export const app: Express = express();

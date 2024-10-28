@@ -59,7 +59,7 @@
 </style>
 <header>
     <h1>JibLog</h1>
-    <img src="Captura de tela 2024-10-22 172936.png" alt="logo JibLog" width="170" > 
+    <img src="logo.png" alt="logo JibLog" width="170" > 
 </header>
 
 <nav>
@@ -76,14 +76,14 @@
             "name": "bbalarina",
             "address": 30575110
         }
-        let ftr_html=`
+        let str_html =`
         <label for="name"> NOME:</label> 
         ${product.name}
         <br>
         <label for="address"> LOCALIZAÇÃO:
         ${product.address}
         `
-        document.getElementById("produto").innerHTML=ftr_html
+        document.getElementById("produto").innerHTML=str_html 
     </script>
     <footer>
         <p>JibLog &copy; 2024</p>

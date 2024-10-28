@@ -68,6 +68,16 @@ class UserService{
 		return updatedUser;
 	}
 
+	async myAccount(email: string){
+		const user = await prisma.user.findFirst({
+			where:{
+				email: email,
+			}
+		});
+
+		return user;
+	}
+
 	async deleteUser(email: string){
 		const deletedUser = await prisma.user.delete({
 			where:{
