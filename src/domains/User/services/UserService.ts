@@ -21,6 +21,7 @@ class UserService{
 		if (!regex.test(address_string)) {
 			throw new InvalidParamError("Esse CEP não é válido.");
 		}
+
 		const user = await prisma.user.create({
 			data: {
 				email: body.email,
