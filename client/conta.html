@@ -66,8 +66,9 @@
     <nav>
         <a href="index.html">Início</a>
         <a href="pedido.html">Rastrear Pedidos</a>
-        <a href="login.html">Login</a>
+        <a id = "login" href="login.html">Login</a>
         <a href="conta.html">Minha Conta</a>
+        <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
     </nav>
 
     <div id="myaccount">
@@ -75,27 +76,54 @@
     </div>
     <script>
         let url = 'http://localhost:3030/api/users/myAccount';
+        console.log(document.cookie)
 
         let str_html = "<h2>Minha Conta:</h2>";
         
         fetch(url, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
+            credentials: "include",
         })
         .then(response => response.json())
         .then(data => {
-            if (data.error) {
-                alert(data.error);
-                return;
-            }
-            
             str_html += "<p>Nome: " + data.name + "</p>";
             str_html += "<p>Email: " + data.email + "</p>";
+            document.getElementById("myaccount").innerHTML = str_html 
         });
+        
+        console.log(str_html)
 
-        document.getElementById("myaccount").innerHTML=str_html 
+
+        function logout(){
+            let url = "http://localhost:3030/api/users/logout";
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
+            })
+            .then(response => {
+                response.json(); 
+                console.log(response);
+                if(response.status != 200){
+                    alert(response.statusText);
+                } 
+                else {
+                    console.log(JSON.stringify(response));
+                }
+            })
+        }
+    </script>
+
+    <script>
+        if (document.cookie){
+            document.getElementById("login").style.display = "none";
+        }
     </script>
 
     <footer>

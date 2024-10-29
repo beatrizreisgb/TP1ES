@@ -56,6 +56,7 @@
         bottom: 0;
         width: 100%;
     }
+
 </style>
 <body>
     <header>
@@ -66,26 +67,22 @@
     <nav>
         <a href="index.html">Início</a>
         <a href="pedido.html">Rastrear Pedidos</a>
-        <a href="login.html">Login</a>
-        <a href="conta.html">Minha Conta</a>
+        <a id  = "login" href="login.html">Login</a>
+        <a id = "myaccount" href="conta.html">Minha Conta</a>
+        <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
     </nav>
 
     <main>
         <h2>Login:</h2>
     
-        <script>
-            // var form = document.getElementById("loginform");
-            // function handleForm(event) {  
-            // }     
-            // form.addEventListener("submit", handleForm);  
-            
+        <script> 
             function login(){
                 event.preventDefault(); 
                 let email = document.getElementById("email").value;
                 let password = document.getElementById("password").value;
                 
                 let url = "http://localhost:3030/api/users/login";
-
+                
                 let data = {
                     email: email,
                     password: password
@@ -94,17 +91,42 @@
                 fetch(url, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
                     },
+                    credentials: "include",
                     body: JSON.stringify(data)
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if(data.error){
-                        alert(data.error);
-                    } else {
-                        alert("Login realizado com sucesso!");
+                .then(response => {
+                    response.json(); 
+                    console.log(response);
+                    if(response.status != 200){
+                        alert(response.statusText);
+                    } 
+                    else{
                         window.location.href = "conta.html";
+                    }
+                })
+            }
+
+            function logout(){
+                // event.preventDefault(); 
+                let url = "http://localhost:3030/api/users/logout";
+
+                fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include"
+                })
+                .then(response => {
+                    response.json(); 
+                    console.log(response);
+                    if(response.status != 200){
+                        alert(response.statusText);
+                    } 
+                    else {
+                        console.log(JSON.stringify(response));
                     }
                 })
             }
@@ -122,10 +144,16 @@
         <nav>
             <a href="cadastro.html"> Clique aqui se ainda não realizou seu cadastro</a>
         </nav>
-    
-        
+        <script>
+            if (document.cookie == ""){
+                document.getElementById("logout").style.display = "none";
+                document.getElementById("myaccount").style.display = "none";
+            }
+            else {
+                document.getElementById("login").style.display = "none";
+            }
+        </script>
     </main>
-    
 
     <footer>
         <p>JibLog &copy; 2024</p>

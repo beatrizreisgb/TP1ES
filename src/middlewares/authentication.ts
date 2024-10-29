@@ -1,9 +1,7 @@
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
-// import prisma from '../../../../config/client';
 import { User } from '@prisma/client';
-import { NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import UserService from '../domains/User/services/UserService';
-import userRoles from '../../utils/constants/userRoles';
 import { compare } from 'bcrypt';
 import { TokenError } from '../../errors/TokenError';
 import { InvalidParamError } from '../../errors/InvalidParamError';
@@ -19,8 +17,8 @@ function generateJWT(user: User, res: Response) {
     const token = sign({ user: body }, process.env.SECRET_KEY || '', { expiresIn: process.env.JWT_EXPIRATION });
 
     res.cookie('jwt', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV !== 'development',
+        // httpOnly: true,
+        // secure: process.env.NODE_ENV !== 'development',
     });
 }
 
@@ -65,7 +63,6 @@ export async function loginMiddleware(req: Request, res: Response, next: NextFun
         generateJWT(user, res);
 
         res.status(200).json('Login realizado com sucesso');
-
 
     } catch (error) {
         next(error);
