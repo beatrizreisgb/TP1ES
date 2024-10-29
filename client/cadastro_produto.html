@@ -57,6 +57,7 @@
         width: 100%;
     }
 </style>
+
 <body>
     <header>
         <h1>JibLog</h1>
@@ -66,73 +67,30 @@
     <nav>
         <a href="index.html">Início</a>
         <a href="pedido.html">Rastrear Pedidos</a>
+        <a id = "myaccount" href="conta.html">Minha Conta</a>
         <a id = "login" href="login.html">Login</a>
         <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
     </nav>
-
-    <div id="myaccount">
-        <p> teste </p>
-    </div>
-
-    
-
-    
-    <script>
-        let url = 'http://localhost:3030/api/users/myAccount';
-        console.log(document.cookie)
-
-        let str_html = "<h2>Minha Conta:</h2>";
-        
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            str_html += "<p>Nome: " + data.name + "</p>";
-            str_html += "<p>Email: " + data.email + "</p>";
-            document.getElementById("myaccount").innerHTML = str_html 
-        });
-        
-        console.log(str_html)
-
-
-        function logout(){
-            let url = "http://localhost:3030/api/users/logout";
-
-            fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
-            })
-            .then(response => {
-                response.json(); 
-                console.log(response);
-                if(response.status != 200){
-                    alert(response.statusText);
-                } 
-                else {
-                    window.location.href = "index.html";
-                }
-            })
-        }
-    </script>
-
-    <script>
-        if (document.cookie){
-            document.getElementById("login").style.display = "none";
-        }
-    </script>
-
+    <main>
+        <h3>Cadastre seu produto: </h3>
+        <label for="name"> Nome: </label>
+        <input type="text" name="product_name" id = "name">
+        <br><br>
+        <label for="description"> Descrição do produto: </label>
+        <input type="text" name="product_description" id="description">
+        <br><br>
+        <label for="price"> Preço: </label>
+        <input type="number" name="product_price" id="price">
+        <br><br>
+        <label for="location"> Localização: </label>
+        <input type="text" name="product_location" id="location">
+        <br><br>
+        <input type="button" value="Cadastrar produto">
+    </main>
     <footer>
         <p>JibLog &copy; 2024</p>
     </footer>
 </body>
     
 </html>
+
