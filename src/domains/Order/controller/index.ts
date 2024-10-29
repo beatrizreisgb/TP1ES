@@ -34,9 +34,9 @@ router.get('/:code', async(req: Request, res: Response, next: NextFunction) => {
 	}
 });
 
-router.post('/create', async(req: Request, res: Response, next: NextFunction) => {
+router.post('/create', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
 	try{
-		await OrderService.create(req.body);
+		await OrderService.create(req.body, +req.user.id);
 		res.json('Pedido feito com sucesso!');
 	}
 	catch(error){

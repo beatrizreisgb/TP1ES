@@ -2,13 +2,13 @@ import prisma from '../../../../config/client';
 import { Order } from '@prisma/client'; 
 
 class OrderService{
-	async create(body: Order){
+	async create(body: Order, userId: number){
 		const order = await prisma.order.create({
 			data: {
 				payment: body.payment,
-				delivery: body.delivery,
-				userId: body.userId,
-				productId: body.productId,
+				delivery: +body.delivery,
+				userId: userId,
+				productId: +body.productId,
 			}
 		});
 

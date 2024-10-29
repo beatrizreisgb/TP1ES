@@ -71,9 +71,9 @@
 <main>
     <h3>Digite o Código do seu pedido:</h3>
     <label for="codigo">Código:</label>
-    <input type="text" name="código_do_produto">
+    <input type="text" name="código_do_produto" id = "code">
     <br><br>
-    <input type="button" value="BUSCAR" onclick="window.location.href='produto.html'">
+    <input type="button" value="BUSCAR" onclick="getProduct()">
 
     </main>
 <body>
@@ -84,8 +84,29 @@
         } else {
             document.getElementById("login").style.display = "none";
         }
+        function getProduct(){
+            // event.preventDefault();
+            const code = document.getElementById("code").value 
+            const url = "http://localhost:3030/api/orders/?code=" + code;
+            
+            let product_info = "<h2> Produto 1 </h2>"
+            fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
+            })
+            .then(response => response.json())
+            .then(data => {
+                data = JSON.stringify(data);
+                console.log(data);
+                product_info += "<p>" + data[0].productId + "</p>";
+                document.getElementById("product").innerHTML = product_info 
+            });
+        }
         function logout(){
-            let url = "http://localhost:3030/api/users/logout";
+            const url = "http://localhost:3030/api/users/logout";
 
             fetch(url, {
                 method: "POST",
@@ -106,6 +127,7 @@
             })
         }
     </script>
+    <div id = "product"></div>
     <footer>
         <p>JibLog &copy; 2024</p>
     </footer>
