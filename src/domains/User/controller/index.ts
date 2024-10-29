@@ -36,7 +36,7 @@ router.post('/create', async(req: Request, res: Response, next: NextFunction) =>
 
 router.post('/myAccount', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
 	try{
-		const user = await UserService.myAccount(req.user.email);
+		const user = await UserService.findByEmail(req.user.email);
 		res.json(user);
 	}
 	catch(error){
