@@ -1,6 +1,7 @@
 import prisma from '../../../../config/client';
 import { Product } from '@prisma/client'; 
 
+//https://stackoverflow.com/questions/5585957/get-latlng-from-zip-code-google-maps-api
 class ProductService{
 	async create(body: Product, userId: number){
 		const owner = await prisma.owner.findFirst({where : {userId: userId}});
