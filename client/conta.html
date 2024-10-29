@@ -67,7 +67,6 @@
         <a href="index.html">Início</a>
         <a href="pedido.html">Rastrear Pedidos</a>
         <a id = "login" href="login.html">Login</a>
-        <a href="conta.html">Minha Conta</a>
         <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
     </nav>
 
@@ -89,6 +88,7 @@
         })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             str_html += "<p>Nome: " + data.name + "</p>";
             str_html += "<p>Email: " + data.email + "</p>";
             document.getElementById("myaccount").innerHTML = str_html 
@@ -114,7 +114,7 @@
                     alert(response.statusText);
                 } 
                 else {
-                    console.log(JSON.stringify(response));
+                    window.location.href = "index.html";
                 }
             })
         }

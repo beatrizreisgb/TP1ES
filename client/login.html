@@ -67,7 +67,6 @@
     <nav>
         <a href="index.html">Início</a>
         <a href="pedido.html">Rastrear Pedidos</a>
-        <a id  = "login" href="login.html">Login</a>
         <a id = "myaccount" href="conta.html">Minha Conta</a>
         <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
     </nav>
@@ -126,7 +125,7 @@
                         alert(response.statusText);
                     } 
                     else {
-                        console.log(JSON.stringify(response));
+                        window.location.href = "index.html";
                     }
                 })
             }
@@ -149,9 +148,7 @@
                 document.getElementById("logout").style.display = "none";
                 document.getElementById("myaccount").style.display = "none";
             }
-            else {
-                document.getElementById("login").style.display = "none";
-            }
+
         </script>
     </main>
 

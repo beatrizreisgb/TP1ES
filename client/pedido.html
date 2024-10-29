@@ -64,9 +64,9 @@
 
 <nav>
     <a href="index.html">Início</a>
-    <a href="pedido">Rastrear Pedidos</a>
-    <a href="login.html">Login</a>
-    <a href="conta">Minha Conta</a>
+    <a id = "login" href="login.html">Login</a>
+    <a id = "myaccount" href="conta.html">Minha Conta</a>
+    <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
 </nav>
 <main>
     <h3>Digite o Código do seu pedido:</h3>
@@ -77,6 +77,35 @@
 
     </main>
 <body>
+    <script>
+        if (document.cookie == ""){
+            document.getElementById("logout").style.display = "none";
+            document.getElementById("myaccount").style.display = "none";
+        } else {
+            document.getElementById("login").style.display = "none";
+        }
+        function logout(){
+            let url = "http://localhost:3030/api/users/logout";
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
+            })
+            .then(response => {
+                response.json(); 
+                console.log(response);
+                if(response.status != 200){
+                    alert(response.statusText);
+                } 
+                else {
+                    window.location.href = "index.html";
+                }
+            })
+        }
+    </script>
     <footer>
         <p>JibLog &copy; 2024</p>
     </footer>
