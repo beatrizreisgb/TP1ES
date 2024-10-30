@@ -1,5 +1,6 @@
 import OwnerService from '../services/OwnerService';
 import { Router, Request, Response, NextFunction } from 'express';
+import { verifyJWT } from '../../../middlewares/authentication';
 
 const router = Router();
 
@@ -33,7 +34,7 @@ router.post('/create', async(req: Request, res: Response, next: NextFunction) =>
 	}
 });
 
-router.put('/update/:email', async(req: Request, res: Response, next: NextFunction) => {
+router.put('/update/:email', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
 	try{
 		await OwnerService.updateOwner(req.params.email, req.body);
 		res.json('Proprietário atualizado');

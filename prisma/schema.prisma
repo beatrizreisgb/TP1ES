@@ -22,7 +22,7 @@ model User {
 model Owner {
   id       Int       @id @default(autoincrement())
   userId   Int       @unique
-  user     User      @relation(fields: [userId], references: [id])
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   products Product[]
 }
 
@@ -34,7 +34,7 @@ model Product {
   price       Float
   ownerId     Int
   orders      Order[]
-  owner       Owner   @relation(fields: [ownerId], references: [id])
+  owner       Owner   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
 
 model Order {

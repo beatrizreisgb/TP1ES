@@ -1,13 +1,21 @@
 import prisma from '../../../../config/client';
 import { Order } from '@prisma/client'; 
+import { InvalidParamError } from '../../../../errors/InvalidParamError';
 
 class OrderService{
-	async create(body: Order, userId: number){
+	async create(body: Order, id: number){
+
+		if (!["Dinheiro", "Cartão", "Pix"].includes(body.payment)) {
+			throw new InvalidParamError("Método inválido de pagamento");
+		}
+
+		const product = await prisma.product.findFirst({where: {id: +body.productId}});
+
 		const order = await prisma.order.create({
 			data: {
 				payment: body.payment,
-				delivery: +body.delivery,
-				userId: userId,
+				delivery: product.price + 20,
+				userId: id,
 				productId: +body.productId,
 			}
 		});

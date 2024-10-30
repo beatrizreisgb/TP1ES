@@ -34,6 +34,10 @@ class ProductService{
 
 		const products = await prisma.product.findMany({where: {ownerId: owner.id}});
 
+		if (!products) {
+			throw new Error("Product not found");
+		  }
+
 		return products;
 	}
 
