@@ -49,7 +49,7 @@ router.post('/create', verifyJWT, checkUserRole(['admin', 'owner']), async(req: 
 	}
 });
 
-router.put('/update/:id', async(req: Request, res: Response, next: NextFunction) => {
+router.put('/update/:id', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
 	try{
 		await ProductService.updateProduct(+req.params.id, req.body);
 		res.json('Produto atualizado');

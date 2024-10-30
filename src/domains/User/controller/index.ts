@@ -44,7 +44,7 @@ router.post('/myAccount', verifyJWT, async(req: Request, res: Response, next: Ne
 	}
 });
 
-router.put('/update/:email', async(req: Request, res: Response, next: NextFunction) => {
+router.put('/update/:email', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
 	try{
 		await UserService.updateUser(req.params.email, req.body);
 		res.json('Usuário atualizado');
