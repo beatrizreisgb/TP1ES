@@ -79,12 +79,6 @@
     <a id = "myaccount" href="conta.html">Minha Conta</a>
     <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
 </nav>
-<main>
-    <h3>Digite o código do seu pedido:</h3>
-    <input type="text" name="código_do_produto" id = "code">
-    <input type="button" value="BUSCAR" onclick="getProduct()">
-
-    </main>
 <body>
     <div class = "centered-div" id = "product"></div>
     <script>
@@ -95,26 +89,49 @@
         } else {
             document.getElementById("login").style.display = "none";
         }
-        function getProduct(){
-            // event.preventDefault();
-            const code = document.getElementById("code").value 
-            document.getElementById("product").style.display = "block";
+        // function getProduct(){
+        //     // event.preventDefault();
+        //     const code = document.getElementById("code").value 
+        //     document.getElementById("product").style.display = "block";
             
-            let url = "http://localhost:3030/api/orders/?code=" + code;
+        //     let url = "http://localhost:3030/api/orders/?code=" + code;
             
+        //     let product_info = "<h2> Produto </h2>"
+        //     fetch(url, {
+        //         method: "GET",
+        //         headers: {
+        //             "Content-Type": "application/json"
+        //         },
+        //         credentials: "include"
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log(data);
+        //         url = "http://localhost:3030/api/products/getById/" + data[0].productId;
+        //         fetch(url, {
+        //             method: "GET",
+        //             headers: {
+        //                 "Content-Type": "application/json"
+        //             },
+        //             credentials: "include"
+        //         })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log(data);
+        //             product_info += "<p>" + data.name + "</p>";
+        //             product_info += "<p> <i>" + data.description + "</i></p>";
+        //             product_info += "<p>" + data.price + "</p>";
+        //             document.getElementById("product").innerHTML = product_info 
+        //         });
+        //         // product_info += "<p>" + data[0].productId + "</p>";
+        //         document.getElementById("product").innerHTML = product_info 
+        //     });
+        // }
+        function getProducts(){
+            let url = "http://localhost:3030/api/orders/order";
             let product_info = "<h2> Produto </h2>"
+            document.getElementById("product").style.display = "block";
             fetch(url, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                url = "http://localhost:3030/api/products/getById/" + data[0].productId;
-                fetch(url, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json"
@@ -123,15 +140,28 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
-                    product_info += "<p>" + data.name + "</p>";
-                    product_info += "<p> <i>" + data.description + "</i></p>";
-                    product_info += "<p>" + data.price + "</p>";
-                    document.getElementById("product").innerHTML = product_info 
+                    let productIds = [];
+                    for (let i in data){
+                        url = "http://localhost:3030/api/products/getById/" + data[i].productId;
+                        fetch(url, {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            credentials: "include"
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            product_info += "<p>" + data.name + "</p>";
+                            product_info += "<p> <i>" + data.description + "</i></p>";
+                            product_info += "<p>" + data.price + "</p>";
+                            document.getElementById("product").innerHTML = product_info 
+                        });
+                        document.getElementById("product").innerHTML = product_info 
+                    }
                 });
-                // product_info += "<p>" + data[0].productId + "</p>";
-                document.getElementById("product").innerHTML = product_info 
-            });
+            document.getElementById("product").innerHTML = product_info 
         }
         function logout(){
             const url = "http://localhost:3030/api/users/logout";
@@ -154,6 +184,8 @@
                 }
             })
         }
+
+        getProducts();
     </script>
     <footer>
         <p>JibLog &copy; 2024</p>
