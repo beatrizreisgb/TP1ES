@@ -57,6 +57,32 @@
         bottom: 0;
         width: 100%;
     }
+    .user-account-info {
+      width: 300px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+
+    .user-account-info h2 {
+      font-size: 1.5em;
+      margin: 0 0 10px;
+    }
+
+    .user-account-info p {
+      margin: 8px 0;
+      font-size: 1em;
+      line-height: 1.4;
+    }
+
+    .user-account-info .username {
+      font-weight: bold;
+      color: #333;
+    }
 </style>
 <body>
     <header>
@@ -66,21 +92,21 @@
     
     <nav>
         <a href="index.html">Início</a>
-        <a href="pedido.html">Rastrear Pedidos</a>
+        <a href="pedido.html">Meus pedidos</a>
         <a id = "login" href="login.html">Login</a>
         <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
     </nav>
 
     <main>
-        <div id="myaccount">
+        <div id="myaccount" class="user-account-info">
             <p> teste </p>
-    </div>
+        </div>
     </main>
     <script>
         let url = 'http://localhost:3030/api/users/myAccount';
         console.log(document.cookie)
 
-        let str_html = "<h2>Minha Conta:</h2>";
+        let str_html = "<h2>Minha Conta</h2>";
         
         fetch(url, {
             method: "POST",
