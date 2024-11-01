@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <html lang="pt-br"> 
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>JibLog</title>
+    </head>
+</html>
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    header{
+        color: #fff;
+        background-color: #177757;
+        text-align: center;
+        padding: 20px;
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+        background-color: #fff;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        }
+
+        nav a {
+        margin: 0 15px;
+        text-decoration: none;
+        color: #177757;
+        font-weight: bold;
+        }
+
+        nav a:hover {
+        color: #0f5c3d;
+    }
+
+    main {
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+        }
+
+    footer{
+        background-color: #177757;
+        text-align: center;
+        padding: 10px;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+
+    .button{
+        padding: 10px 20px;
+        background-color: #177757;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .button:hover{
+        background-color: #0f5c3d;
+    }
+
+</style>
+<body>
+    <header>
+        <h1>JibLog</h1>
+        <img src="logo.png" alt="logo JibLog" width="170" > 
+    </header>
+    
+    <nav>
+        <a href="index.html">Início</a>
+        <a href="pedido.html">Rastrear Pedidos</a>
+        <a id = "myaccount" href="conta.html">Minha Conta</a>
+        <a id = "login" href="login.html">Login</a>
+        <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
+    </nav>
+    <main>
+        <h3>Escolha o método de pagamento: </h3>
+        <div id="delivery-payment">
+            <input type="button" class="button" value="Pagar na Entrega">
+            <section id="delivery-payment-section"></section>
+        </div>
+        <br>
+        <div id="card-payment">
+            <input type="button" class="button" value="Cartão de Crédito/Débito">
+            <section id="card-payment-section"></section>
+        </div>
+        <br>
+        <div id="pix-payment">
+            <input type="button"class="button" value="PIX">
+            <section id="pix-payment-section"></section>
+        </div>
+    </main>
+    <footer>
+        <p>JibLog &copy; 2024</p>
+    </footer>
+</body>
+    
