@@ -90,7 +90,7 @@
     </header>
 
     <nav>
-        <a href="pedido.html">Rastrear Pedidos</a>
+        <a id = "myorders" href="pedido.html">Meus pedidos</a>
         <a id = "login" href="login.html">Login</a>
         <a id = "myaccount" href="conta.html">Minha Conta</a>
         <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
@@ -112,6 +112,7 @@
         if (document.cookie == ""){
             document.getElementById("logout").style.display = "none";
             document.getElementById("myaccount").style.display = "none";
+            document.getElementById("myorders").style.display = "none";
         } else {
             document.getElementById("login").style.display = "none";
         }
