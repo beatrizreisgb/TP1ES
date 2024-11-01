@@ -24,26 +24,26 @@
         padding: 20px;
     }
 
-    nav {
+    nav{
         display: flex;
         justify-content: center;
         background-color: #fff;
         padding: 10px;
         border-bottom: 1px solid #ddd;
-        }
+    }
 
-        nav a {
+        nav a{
         margin: 0 15px;
         text-decoration: none;
         color: #177757;
         font-weight: bold;
         }
 
-        nav a:hover {
+        nav a:hover{
         color: #0f5c3d;
     }
 
-    main {
+    main{
         padding: 20px;
         max-width: 800px;
         margin: 0 auto;
@@ -57,7 +57,60 @@
         bottom: 0;
         width: 100%;
     }
+    form {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="password"] {
+            width: 60%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        input[type="password"]:focus {
+            border-color: #177757;
+            outline: none;
+            box-shadow: 0 0 5px rgba(23, 119, 87, 0.5);
+        }
+
+        .button {
+            padding: 8px 5px;
+            background-color: #177757;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #0f5c3d;
+        }
+
+
 </style>
+ 
 <body>
     
     <header>
@@ -69,11 +122,16 @@
         <a href="index.html">Início</a>
         <a href="login.html">Login</a>
     </nav>
-    <Main>
+    <main>
         <h2>Realize seu Cadastro:</h2>
 
+<<<<<<< HEAD
         <form id ="loginregister" onsubmit="register()">
             <label for="name">Nome Completo:</label>
+=======
+        <form>
+            <label for="name">Nome completo:</label>
+>>>>>>> 3d59519 (feat: styling)
             <input type="text" name="name" id="name">
             <br><br>
             <label for="email">Email:</label>
@@ -88,9 +146,10 @@
             <label for="password">Confirme sua senha:</label>
             <input type="password" name="password" id="password-verifier">
             <br><br>
-            <input type="submit" value="Cadastre-se">
+            <input type="submit" class="button" value="Cadastre-se">
             <br> <br>
         </form>
+<<<<<<< HEAD
 
         <script>
             function register(){
@@ -128,9 +187,11 @@
             }
         </script>
     </Main>
+=======
+    </main>
+>>>>>>> 3d59519 (feat: styling)
     <footer>
         <p>JibLog &copy; 2024</p>
     </footer>
 </body>
     
-</html>
