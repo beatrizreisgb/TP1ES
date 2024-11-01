@@ -68,12 +68,11 @@
     <nav>
         <a href="index.html">Início</a>
         <a href="login.html">Login</a>
-        <a href="#conta">Minha Conta</a>
     </nav>
     <Main>
         <h2>Realize seu Cadastro:</h2>
 
-        <form>
+        <form id ="loginregister" onsubmit="register()">
             <label for="name">Nome Completo:</label>
             <input type="text" name="name" id="name">
             <br><br>
@@ -87,11 +86,47 @@
             <input type="password" name="password" id="password">
             <br><br>
             <label for="password">Confirme sua senha:</label>
-            <input type="password" name="password" id="password">
+            <input type="password" name="password" id="password-verifier">
             <br><br>
             <input type="submit" value="Cadastre-se">
             <br> <br>
         </form>
+
+        <script>
+            function register(){
+                event.preventDefault(); 
+                const name = document.getElementById("name").value; 
+                const email = document.getElementById("email").value; 
+                const address = document.getElementById("cep").value; 
+                const password = document.getElementById("password").value; 
+                const password_verifier = document.getElementById("password-verifier").value; 
+
+                const data = {
+                    name: name,
+                    email: email,
+                    address: address,
+                    password: password,
+                }
+                if (password != password_verifier){
+                    alert("As senhas não coincidem.");
+                    return;
+                }
+                
+                const url = "http://localhost:3030/api/users/create";
+                fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(data),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                });
+            }
+        </script>
     </Main>
     <footer>
         <p>JibLog &copy; 2024</p>
