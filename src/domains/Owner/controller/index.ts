@@ -1,6 +1,7 @@
 import OwnerService from '../services/OwnerService';
 import { Router, Request, Response, NextFunction } from 'express';
 import { verifyJWT } from '../../../middlewares/authentication';
+import ProductService from '../../Product/services/ProductService';
 
 const router = Router();
 
@@ -18,6 +19,16 @@ router.get('/:email', async(req: Request, res: Response, next: NextFunction) => 
 	try{
 		const owner = await OwnerService.findByEmail(req.params.email);
 		res.json(owner);
+	}
+	catch(error){
+		next(error);
+	}
+});
+
+router.get('/product', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
+	try{
+		const orders = await ProductService.findProductsByOwner(+req.user.id);
+		res.json(orders);
 	}
 	catch(error){
 		next(error);
@@ -44,7 +55,7 @@ router.put('/update/:email', verifyJWT, async(req: Request, res: Response, next:
 	}
 });
 
-router.delete('/delete/:email', async(req: Request, res: Response, next: NextFunction) => {
+router.delete('/delete/:email', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
 	try{
 		await OwnerService.deleteOwner(req.params.email);
 		res.json('Proprietário deletado');

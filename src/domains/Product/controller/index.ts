@@ -28,7 +28,7 @@ router.get('/product', verifyJWT, async(req: Request, res: Response, next: NextF
 });
 
 // get product by id 
-router.get('/getById/:id', async(req: Request, res: Response, next: NextFunction) => { 
+router.get('/getById/:id', verifyJWT, async(req: Request, res: Response, next: NextFunction) => { 
 	try{
 		const owner = await ProductService.findById(+req.params.id);
 		res.json(owner);
@@ -59,8 +59,7 @@ router.put('/update/:id', verifyJWT, async(req: Request, res: Response, next: Ne
 	}
 });
 
-router.delete('/delete/:id', async(req: Request, res: Response, next: NextFunction) => {
-	try{
+router.delete('/delete/:id', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {	try{
 		await ProductService.deleteProduct(+req.params.id);
 		res.json('Produto deletado');
 	}

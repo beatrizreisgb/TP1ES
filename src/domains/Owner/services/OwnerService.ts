@@ -16,13 +16,10 @@ class OwnerService{
 
 		return owner;
 	}
-
+	
 	async findByEmail(email: string){
-		const owner = await prisma.owner.findFirst({
-			where:{
-				email: email,
-			}
-		});
+		const user = await prisma.user.findFirst({where:{email: email}});
+		const owner = await prisma.owner.findFirst({where:{userId: user.id}});
 
 		return owner;
 	}
@@ -33,8 +30,13 @@ class OwnerService{
 		return owners;
 	}
 
-	async updateOwner(email: string, body: Owner){
-		const updatedowner = await prisma.owner.update({
+	async findProductsByOwner(id: number){
+		const products = await prisma.product.findMany({where: {ownerId: id}});
+		return products;
+	}
+
+	async updateOwner(email: string, body: User){
+		const updatedUser = await prisma.user.update({
 			where:{
 				email: email,
 			},
@@ -45,7 +47,7 @@ class OwnerService{
 			}
 		});
 
-		return updatedowner;
+		return updatedUser;
 	}
 
 	async deleteOwner(email: string){

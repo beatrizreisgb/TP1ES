@@ -54,8 +54,7 @@ router.put('/update/:email', verifyJWT, async(req: Request, res: Response, next:
 	}
 });
 
-router.delete('/delete/:email', async(req: Request, res: Response, next: NextFunction) => {
-	try{
+router.delete('/delete/:email', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {	try{
 		await UserService.deleteUser(req.params.email); // + para number
 		res.json('Usuário deletado');
 	}
