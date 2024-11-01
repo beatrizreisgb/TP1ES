@@ -23,7 +23,7 @@ class OrderService{
 		return order;
 	}
 
-	async findByCode(code: number){
+	async findByCode(code: string){
 		const order = await prisma.order.findFirst({
 			where:{
 				code: code,
@@ -45,10 +45,12 @@ class OrderService{
 		return orders;
 	}
 
-	async updateOrder(code: number, body: Order){
+	async updateOrder(code: string, body: Order){
+		const order = await prisma.order.findFirst({where:{code}});
+	  
 		const updatedOrder = await prisma.order.update({
-			where:{
-				code: code,
+			where:{ 
+				id: order.id,
 			},
 			data:{
 				payment: body.payment,
@@ -59,15 +61,16 @@ class OrderService{
 		return updatedOrder;
 	}
 
-	async deleteOrder(code: number){
+	async deleteOrder(code: string) {
+		const order = await prisma.order.findFirst({where:{code}});
+	  
 		const deletedOrder = await prisma.order.delete({
-			where:{
-				code: code,
-			}
+		  where: { id: order.id },
 		});
-
+	  
 		return deletedOrder;
-	}
+	  }
+	  
 }
 
 export default new OrderService();

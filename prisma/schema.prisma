@@ -39,7 +39,7 @@ model Product {
 
 model Order {
   id        Int     @id @default(autoincrement())
-  code      String  @default(uuid())
+  code      String  @unique @default(uuid())
   payment   String
   delivery  Float
   userId    Int

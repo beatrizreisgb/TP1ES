@@ -25,7 +25,7 @@ router.get('/order', verifyJWT, async(req: Request, res: Response, next: NextFun
 	}
 });
 
-router.get('/:code', async(req: Request, res: Response, next: NextFunction) => { 
+router.get('/:code', verifyJWT, async(req: Request, res: Response, next: NextFunction) => { 
 	try{
 		const order = await OrderService.findByCode(+req.params.code);
 		res.json(order);
@@ -55,7 +55,7 @@ router.put('/update/:code', verifyJWT, async(req: Request, res: Response, next: 
 	}
 });
 
-router.delete('/delete/:code', async(req: Request, res: Response, next: NextFunction) => {
+router.delete('/delete/:code', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
 	try{
 		await OrderService.deleteOrder(+req.params.code);
 		res.json('Pedido deletado');

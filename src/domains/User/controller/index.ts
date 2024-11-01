@@ -13,7 +13,7 @@ router.get('/', async(req: Request, res: Response, next: NextFunction) => {
 		next(error);
 	}
 });
-//localhost:3000/joaolucas@email.com
+
 router.get('/:email', async(req: Request, res: Response, next: NextFunction) => { 
 	try{
 		const user = await UserService.findByEmail(req.params.email);
@@ -54,7 +54,7 @@ router.put('/update/:email', verifyJWT, async(req: Request, res: Response, next:
 	}
 });
 
-router.delete('/delete/:email', async(req: Request, res: Response, next: NextFunction) => {
+router.delete('/delete/:email', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
 	try{
 		await UserService.deleteUser(req.params.email); // + para number
 		res.json('Usuário deletado');
