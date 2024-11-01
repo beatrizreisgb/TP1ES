@@ -6,7 +6,7 @@ import { QueryError } from '../../../../errors/QueryError';
 
 class UserService{
 
-	async encryptPassword(password: string) {
+	private async encryptPassword(password: string) {
         const saltRounds = 10;
         return await hash(password, saltRounds);
     }
