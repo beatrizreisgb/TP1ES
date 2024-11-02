@@ -57,16 +57,38 @@
         bottom: 0;
         width: 100%;
     }
-    .centered-div {
-        width: 300px;
-        margin: 0 auto; 
-        padding: 20px; 
-        border: 1px solid gray; 
-        background-color: white; 
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-        border-radius: 5px; 
+    .product-row {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
         margin-bottom: 20px;
     }
+
+    .centered-div {
+        flex: 1 1 calc(33.333% - 10px); /* 3 itens por linha, com espaço entre eles */
+        padding: 20px;
+        border: 1px solid gray;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        margin: 5px;
+        box-sizing: border-box;
+    }
+
+    /* Para telas médias: 2 produtos por linha */
+    @media (max-width: 768px) {
+        .centered-div {
+            flex: 1 1 calc(50% - 10px);
+        }
+    }
+
+    /* Para telas pequenas: 1 produto por linha */
+    @media (max-width: 480px) {
+        .centered-div {
+            flex: 1 1 100%;
+        }
+    }
+
 </style>
 <header>
     <h1>JibLog</h1>
@@ -80,88 +102,64 @@
     <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
 </nav>
 <body>
-    <div class = "centered-div" id = "product"></div>
+    <div id = "products"></div>
     <script>
-        document.getElementById("product").style.display = "none";
+        document.getElementById("products").style.display = "none";
         if (document.cookie == ""){
             document.getElementById("logout").style.display = "none";
             document.getElementById("myaccount").style.display = "none";
         } else {
             document.getElementById("login").style.display = "none";
         }
-        // function getProduct(){
-        //     // event.preventDefault();
-        //     const code = document.getElementById("code").value 
-        //     document.getElementById("product").style.display = "block";
-            
-        //     let url = "http://localhost:3030/api/orders/?code=" + code;
-            
-        //     let product_info = "<h2> Produto </h2>"
-        //     fetch(url, {
-        //         method: "GET",
-        //         headers: {
-        //             "Content-Type": "application/json"
-        //         },
-        //         credentials: "include"
-        //     })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         console.log(data);
-        //         url = "http://localhost:3030/api/products/getById/" + data[0].productId;
-        //         fetch(url, {
-        //             method: "GET",
-        //             headers: {
-        //                 "Content-Type": "application/json"
-        //             },
-        //             credentials: "include"
-        //         })
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             console.log(data);
-        //             product_info += "<p>" + data.name + "</p>";
-        //             product_info += "<p> <i>" + data.description + "</i></p>";
-        //             product_info += "<p>" + data.price + "</p>";
-        //             document.getElementById("product").innerHTML = product_info 
-        //         });
-        //         // product_info += "<p>" + data[0].productId + "</p>";
-        //         document.getElementById("product").innerHTML = product_info 
-        //     });
-        // }
         function getProducts(){
             let url = "http://localhost:3030/api/orders/order";
-            let product_info = "<h2> Produto </h2>"
-            document.getElementById("product").style.display = "block";
+            document.getElementById("products").style.display = "block";
             fetch(url, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    credentials: "include"
-                })
-                .then(response => response.json())
-                .then(data => {
-                    let productIds = [];
-                    for (let i in data){
-                        url = "http://localhost:3030/api/products/getById/" + data[i].productId;
-                        fetch(url, {
-                            method: "GET",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            credentials: "include"
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(data);
-                            product_info += "<p>" + data.name + "</p>";
-                            product_info += "<p> <i>" + data.description + "</i></p>";
-                            product_info += "<p>" + data.price + "</p>";
-                            document.getElementById("product").innerHTML = product_info 
-                        });
-                        document.getElementById("product").innerHTML = product_info 
-                    }
-                });
-            document.getElementById("product").innerHTML = product_info 
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
+            })
+            .then(response => response.json())
+            .then(data => {
+                let fetchPromises = []; 
+
+                for (let i in data) {
+                    let idx = parseInt(i) + 1; 
+                    let productId = data[i].productId;
+                    let productFetch = fetch("http://localhost:3030/api/products/getById/" + productId, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        credentials: "include"
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        return "<div class='centered-div'>" +
+                            "<h2>Produto " + idx + "</h2>" +
+                            "<p>" + data.name + "</p>" +
+                            "<p><i>" + data.description + "</i></p>" +
+                            "<p>" + data.price + "</p></div><br>";
+                    });
+
+                    fetchPromises.push(productFetch); 
+                }
+
+                return Promise.all(fetchPromises);
+            })
+            .then(productDivs => {
+                let rowsHtml = '';
+                for (let i = 0; i < productDivs.length; i += 3) {
+                    let rowDivs = productDivs.slice(i, i + 3).join('');
+                    rowsHtml += "<div class='product-row'>" + rowDivs + "</div>";
+                }
+                document.getElementById("products").innerHTML = rowsHtml;
+            })
+            .catch(error => {
+                console.error('Error fetching product data:', error);
+            });
         }
         function logout(){
             const url = "http://localhost:3030/api/users/logout";
@@ -184,7 +182,6 @@
                 }
             })
         }
-
         getProducts();
     </script>
     <footer>
