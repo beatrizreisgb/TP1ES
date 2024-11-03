@@ -63,3 +63,15 @@ História #4: Como usuário, eu gostaria de poder escolher entre diversas formas
 - Implementar no backend o formulário de inserção de dados de pagamento [Beatriz]
 - Criar no frontend a tela de seleção da forma de pagamento [Izadora]
 - Integrar o frontend e o backend [João]
+- 
+
+Diagramas UML
+	<div align="center">
+		<img src = "imgs/uml1.png"/>
+	</div>
+ 	<p align="center">Diagrama 1: Diagrama de classes, representando a estrutura e a organização do sistema JibLog.</p>
+
+  <div align="center">
+		<img src = "imgs/uml2.png"/>
+	</div>
+ 	<p align="center">Diagrama 2: Diagrama de atividades, representando o fluxo de execução do sistema JibLog.</p>
