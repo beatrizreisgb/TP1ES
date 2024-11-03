@@ -57,7 +57,6 @@
         bottom: 0;
         width: 100%;
     }
-<<<<<<< HEAD
     .product-row {
         display: flex;
         justify-content: space-between;
@@ -88,7 +87,8 @@
         .centered-div {
             flex: 1 1 100%;
         }
-
+        
+        
 </style>
 <header>
     <h1>JibLog</h1>
@@ -103,6 +103,14 @@
 </nav>
 
 <body>
+
+    <main>
+        <h3>Digite o código do seu pedido:</h3>
+        <input type="text" name="código_do_produto" id = "code">
+        <br><br>
+        <input type="button" class="button" value="BUSCAR" onclick="getProduct()">
+    </main>
+
     <div id = "products"></div>
     <script>
         document.getElementById("products").style.display = "none";
