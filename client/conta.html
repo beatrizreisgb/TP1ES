@@ -106,15 +106,13 @@
     
     <nav>
         <a href="index.html">Início</a>
-        <a href="pedido.html">Meus pedidos</a>
+        <a id = "pedidos"></a>
         <a id = "login" href="login.html">Login</a>
         <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
     </nav>
 
     <main>
-        <div id="myaccount" class="user-account-info">
-            <p> teste </p>
-        </div>
+        <div id="myaccount" class="user-account-info"></div>
         <br>
         <a id = "register-product" class = "button" href = "cadastro_produto.html">Cadastrar produto</a>
     </main>
@@ -137,6 +135,12 @@
             console.log(role);
             if (role !== "owner"){
                 document.getElementById("register-product").style.display = "none";
+                document.getElementById("pedidos").href = "pedido.html";
+                document.getElementById("pedidos").innerHTML = "Meus pedidos";
+            }
+            else{
+                document.getElementById("pedidos").href = "meus_produtos_owner.html";
+                document.getElementById("pedidos").innerHTML = "Meus produtos";
             }
             str_html += "<p>Nome: " + data.name + "</p>";
             str_html += "<p>Email: " + data.email + "</p>";

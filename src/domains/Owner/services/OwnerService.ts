@@ -31,7 +31,9 @@ class OwnerService{
 	}
 
 	async findProductsByOwner(id: number){
-		const products = await prisma.product.findMany({where: {ownerId: id}});
+		const owner = await prisma.owner.findFirst({where: {userId: id}});
+		// console.log(owner);
+		const products = await prisma.product.findMany({where: {ownerId: owner.id}});
 
 		return products;
 	}

@@ -134,7 +134,7 @@
     </nav>
     <main>
         <h3>Cadastre seu produto: </h3>
-        <form>
+        <form id = "produtregister" onsubmit="productRegister()">
             <label for="name"> Nome: </label>
             <input type="text" name="product_name" id = "name">
             <br><br>
@@ -147,9 +147,41 @@
             <label for="location"> Localização: </label>
             <input type="text" name="product_location" id="location">
             <br><br>
-            <input type="button" class="button" value="Cadastrar produto">
+            <input type="submit" class="button" value="Cadastrar produto">
         </form>
     </main>
+    <script>
+        function productRegister(){
+            event.preventDefault(); 
+
+            let name = document.getElementById("name").value;
+            let description = document.getElementById("description").value;
+            let price = document.getElementById("price").value;
+            let location = document.getElementById("location").value;
+
+            const data = {
+                name: name,
+                description: description,
+                price: price,
+                location: location
+            };
+
+            const url = "http://localhost:3030/api/products/create";
+                fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(data),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert("Produto criado com sucesso");    
+                }
+            );
+        }
+    </script>
     <footer>
         <p>JibLog &copy; 2024</p>
     </footer>

@@ -73,6 +73,25 @@
         background-color: #0f5c3d;
     }
 
+    .product-row {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .centered-div {
+        flex: 1 1 calc(33.333% - 10px); /* 3 itens por linha, com espaço entre eles */
+        padding: 20px;
+        border: 1px solid gray;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        margin: 5px;
+        box-sizing: border-box;
+        width: 20rem;
+    }
+
 </style>
 
 <body>
@@ -83,21 +102,72 @@
 
     <nav>
         <a href="index.html">Início</a>
-        <a href="pedido.html">Rastrear Pedidos</a>
-        <a id = "login" href="login.html">Login</a>
+        <a id = "myaccount" href="conta.html">Minha conta</a>
         <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
     </nav>
     <main>
         <h3>Meus Produtos:</h3>
-        <label for="name"> Nome: </label>
-        <br><br>
-        <label for="description"> Descrição: </label>
-        <br><br>
-        <label for="price"> Preço: </label>
-        <br><br>
-        <input type="button" class="button" value="Atualizar a localização do produto">
-
     </main>
+
+    <div id = "products"></div>
+    
+    <script>
+        function logout(){
+            let url = "http://localhost:3030/api/users/logout";
+            
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
+            })
+            .then(response => {
+                response.json(); 
+                console.log(response);
+                if(response.status != 200){
+                    alert(response.statusText);
+                } 
+                else {
+                    window.location.href = "index.html";
+                }
+            })
+        }
+        const url = "http://localhost:3030/api/owners/product";
+        document.getElementById("products").style.display = "block";
+        let productFetch = fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
+            })
+            .then(response => response.json())
+            .then(data => {
+                let rows = []; 
+                for (let i in data){
+                    let product = data[i];
+                    let productDiv = "<div class='centered-div'>";
+                    productDiv += "<h4>" + product.name + "</h4>";
+                    productDiv += "<p>" + product.description + "</p>";
+                    productDiv += "<p>R$ " + product.price + "</p>";
+                    productDiv += "<p>" + product.location + "</p>";
+                    productDiv += "</div>";
+                    rows.push("<div class='product-row'>" + productDiv + "</div>"); 
+                }
+
+                let rowsHtml = '';
+                for (let i = 0; i < rows.length; i += 3) {
+                    let rowDivs = rows.slice(i, i + 3).join('');
+                    rowsHtml += "<div class='product-row'>" + rowDivs + "</div>";
+                }
+                document.getElementById("products").innerHTML = rowsHtml;
+                // console.log(rows);
+            });
+
+        // console.log("aaa" + JSON.stringify(productFetch));
+
+    </script>
 
     <footer>
         <p>JibLog &copy; 2024</p>
