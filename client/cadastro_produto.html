@@ -58,19 +58,58 @@
         width: 100%;
     }
 
-    .button{
-        padding: 10px 20px;
-        background-color: #177757;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: bold;
-    }
-    
-    .button:hover{
-        background-color: #0f5c3d;
-    }
+    form{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label{
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="password"]{
+            width: 60%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        input[type="password"]:focus{
+            border-color: #177757;
+            outline: none;
+            box-shadow: 0 0 5px rgba(23, 119, 87, 0.5);
+        }
+
+        .button{
+            padding: 8px 5px;
+            background-color: #177757;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 150px;
+        }
+
+        .button:hover{
+            background-color: #0f5c3d;
+        }
+
 
 </style>
 
