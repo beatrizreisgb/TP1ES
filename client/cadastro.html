@@ -32,22 +32,38 @@
         border-bottom: 1px solid #ddd;
     }
 
-        nav a{
+    nav a{
         margin: 0 15px;
         text-decoration: none;
         color: #177757;
         font-weight: bold;
-        }
+    }
 
-        nav a:hover{
+    nav a:hover{
         color: #0f5c3d;
     }
 
-    main{
+    main {
         padding: 20px;
-        max-width: 800px;
+        max-width: 400px; /* Limita a largura para centralização */
         margin: 0 auto;
-        }
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 160px); /* Para centralizar verticalmente com o header e footer */
+    }
+
+    form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
     footer{
         background-color: #177757;
@@ -56,16 +72,7 @@
         position: relative;
         bottom: 0;
         width: 100%;
-    }
-    form {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    }   
 
         label {
             font-weight: bold;

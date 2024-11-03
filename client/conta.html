@@ -68,9 +68,23 @@
       color: #333;
     }
 
+    .button {
+        padding: 8px 5px;
+        background-color: #177757;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        width: 100px;
+        text-decoration: none;
+    }
+
     .user-account-info h2 {
-      font-size: 1.5em;
-      margin: 0 0 10px;
+        font-size: 1.5em;
+        margin: 0 0 10px;
     }
 
     .user-account-info p {
@@ -101,10 +115,12 @@
         <div id="myaccount" class="user-account-info">
             <p> teste </p>
         </div>
+        <br>
+        <a class = "button" href = "cadastro_produto.html">Cadastrar produto</a>
     </main>
+    
     <script>
         let url = 'http://localhost:3030/api/users/myAccount';
-        console.log(document.cookie)
 
         let str_html = "<h2>Minha Conta</h2>";
         
@@ -117,14 +133,11 @@
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            const role = data.role;
             str_html += "<p>Nome: " + data.name + "</p>";
             str_html += "<p>Email: " + data.email + "</p>";
             document.getElementById("myaccount").innerHTML = str_html 
         });
-        
-        console.log(str_html)
-
 
         function logout(){
             let url = "http://localhost:3030/api/users/logout";
@@ -147,11 +160,11 @@
             })
         }
     </script>
-
     <script>
         if (document.cookie){
             document.getElementById("login").style.display = "none";
         }
+        console.log(role);
     </script>
 
     <footer>

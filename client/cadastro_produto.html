@@ -43,11 +43,27 @@
         color: #0f5c3d;
     }
 
-    main{
+    main {
         padding: 20px;
-        max-width: 800px;
+        max-width: 600px; 
         margin: 0 auto;
-        }
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 160px); 
+    }
+
+    form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
     footer{
         background-color: #177757;
@@ -58,59 +74,47 @@
         width: 100%;
     }
 
-    form{
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    label{
+        font-weight: bold;
+        color: #333;
+    }
 
-        label{
-            font-weight: bold;
-            color: #333;
-        }
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    input[type="password"]{
+        width: 95%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="number"],
-        input[type="password"]{
-            width: 60%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="number"]:focus,
+    input[type="password"]:focus{
+        border-color: #177757;
+        outline: none;
+        box-shadow: 0 0 5px rgba(23, 119, 87, 0.5);
+    }
 
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="number"]:focus,
-        input[type="password"]:focus{
-            border-color: #177757;
-            outline: none;
-            box-shadow: 0 0 5px rgba(23, 119, 87, 0.5);
-        }
+    .button{
+        padding: 8px 5px;
+        background-color: #177757;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        width: 150px;
+    }
 
-        .button{
-            padding: 8px 5px;
-            background-color: #177757;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-            width: 150px;
-        }
-
-        .button:hover{
-            background-color: #0f5c3d;
-        }
-
-
+    .button:hover{
+        background-color: #0f5c3d;
+    }
 </style>
 
 <body>
@@ -118,29 +122,33 @@
         <h1>JibLog</h1>
         <img src="logo.png" alt="logo JibLog" width="170" > 
     </header>
-    
+
+    <script>
+        console.log(document.cookie)
+    </script>
+
     <nav>
         <a href="index.html">Início</a>
-        <a href="pedido.html">Rastrear Pedidos</a>
         <a id = "myaccount" href="conta.html">Minha Conta</a>
-        <a id = "login" href="login.html">Login</a>
         <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
     </nav>
     <main>
         <h3>Cadastre seu produto: </h3>
-        <label for="name"> Nome: </label>
-        <input type="text" name="product_name" id = "name">
-        <br><br>
-        <label for="description"> Descrição do produto: </label>
-        <input type="text" name="product_description" id="description">
-        <br><br>
-        <label for="price"> Preço: </label>
-        <input type="number" name="product_price" id="price">
-        <br><br>
-        <label for="location"> Localização: </label>
-        <input type="text" name="product_location" id="location">
-        <br><br>
-        <input type="button" class="button" value="Cadastrar produto">
+        <form>
+            <label for="name"> Nome: </label>
+            <input type="text" name="product_name" id = "name">
+            <br><br>
+            <label for="description"> Descrição do produto: </label>
+            <input type="text" name="product_description" id="description">
+            <br><br>
+            <label for="price"> Preço: </label>
+            <input type="number" name="product_price" id="price">
+            <br><br>
+            <label for="location"> Localização: </label>
+            <input type="text" name="product_location" id="location">
+            <br><br>
+            <input type="button" class="button" value="Cadastrar produto">
+        </form>
     </main>
     <footer>
         <p>JibLog &copy; 2024</p>
