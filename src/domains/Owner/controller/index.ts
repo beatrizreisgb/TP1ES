@@ -17,7 +17,7 @@ router.get('/', async(req: Request, res: Response, next: NextFunction) => {
 
 router.get('/product', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
 	try{
-		const orders = await ProductService.findProductsByOwner(+req.user.id);
+		const orders = await OwnerService.findProductsByOwner(+req.user.id);
 		res.json(orders);
 	}
 	catch(error){
