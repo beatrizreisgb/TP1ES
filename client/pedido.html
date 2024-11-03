@@ -26,7 +26,7 @@
 <body>
 
     <main>
-        <h3>Digite o código do seu pedido:</h3>
+        <h3>Digite o código do seu pedido para rastreá-lo:</h3>
         <input type="text" name="código_do_produto" id = "code">
         <br><br>
         <input type="button" class="button" value="BUSCAR" onclick="getProduct()">
@@ -52,12 +52,12 @@
                 credentials: "include"
             })
             .then(response => response.json())
-            .then(data => {
+            .then(orderData => {
                 let fetchPromises = []; 
 
-                for (let i in data) {
+                for (let i in orderData) {
                     let idx = parseInt(i) + 1; 
-                    let productId = data[i].productId;
+                    let productId = orderData[i].productId;
                     let productFetch = fetch("http://localhost:3030/api/products/getById/" + productId, {
                         method: "GET",
                         headers: {
@@ -66,12 +66,13 @@
                         credentials: "include"
                     })
                     .then(response => response.json())
-                    .then(data => {
+                    .then(productData => {
                         return "<div class='centered-div'>" +
                             "<h2>Produto " + idx + "</h2>" +
-                            "<p>" + data.name + "</p>" +
-                            "<p><i>" + data.description + "</i></p>" +
-                            "<p>" + data.price + "</p></div><br>";
+                            "<p>" + orderData[i].code + "</p>" +
+                            "<p>" + productData.name + "</p>" +
+                            "<p><i>" + productData.description + "</i></p>" +
+                            "<p>" + productData.price + "</p></div><br>";
                     });
 
                     fetchPromises.push(productFetch); 
