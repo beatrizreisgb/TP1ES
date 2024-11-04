@@ -48,7 +48,8 @@
 
         function getMapProduct(event) {
             
-            let url = "http://localhost:3030/api/orders/order";
+            let url = "http://localhost:3030/api/orders/" + document.getElementById("code").value;
+            console.log(url);
             fetch(url, {
                 method: "GET",
                 headers: {
@@ -58,7 +59,8 @@
             })
             .then(response => response.json())
             .then(orderData => {
-                url = "http://localhost:3030/api/products/getById/" + orderData[0].productId;
+                console.log(orderData);
+                url = "http://localhost:3030/api/products/getById/" + orderData.productId;
                 fetch(url, {
                     method: "GET",
                     headers: {

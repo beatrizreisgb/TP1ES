@@ -27,7 +27,7 @@ router.get('/order', verifyJWT, async(req: Request, res: Response, next: NextFun
 
 router.get('/:code', verifyJWT, async(req: Request, res: Response, next: NextFunction) => { 
 	try{
-		const order = await OrderService.findByCode(+req.params.code);
+		const order = await OrderService.findByCode(req.params.code);
 		res.json(order);
 	}
 	catch(error){
@@ -47,7 +47,7 @@ router.post('/create', verifyJWT, checkUserRole(['user']), async(req: Request, r
 
 router.put('/update/:code', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
 	try{
-		await OrderService.updateOrder(+req.params.code, req.body);
+		await OrderService.updateOrder(req.params.code, req.body);
 		res.json('Pedido atualizado');
 	}
 	catch(error){
@@ -57,7 +57,7 @@ router.put('/update/:code', verifyJWT, async(req: Request, res: Response, next: 
 
 router.delete('/delete/:code', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
 	try{
-		await OrderService.deleteOrder(+req.params.code);
+		await OrderService.deleteOrder(req.params.code);
 		res.json('Pedido deletado');
 	}
 	catch(error){
