@@ -29,19 +29,66 @@
         <h3>Digite o código do seu pedido para rastreá-lo:</h3>
         <input type="text" name="código_do_produto" id = "code">
         <br><br>
-        <input type="button" class="button" value="BUSCAR" onclick="getProduct()">
+        <input type="button" class="button" value="BUSCAR" onclick="getMapProduct()">
 
     </main>
 
+    <div id = "map" style="display: none"></div>
     <div id = "products"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhG2tteZp2nNIBQwmKfi0BD57MIMp1d-8"></script>
     <script>
         document.getElementById("products").style.display = "none";
         if (document.cookie == ""){
             document.getElementById("logout").style.display = "none";
             document.getElementById("myaccount").style.display = "none";
-        } else {
+        } 
+        else {
             document.getElementById("login").style.display = "none";
         }
+
+        function getMapProduct(event) {
+            
+            let url = "http://localhost:3030/api/orders/order";
+            fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
+            })
+            .then(response => response.json())
+            .then(orderData => {
+                url = "http://localhost:3030/api/products/getById/" + orderData[0].productId;
+                fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include"
+                })
+                .then(response => response.json())
+                .then(productData => {
+                    var geocoder = new google.maps.Geocoder();
+                    console.log(productData);
+                    document.getElementById("map").style.display = "block";
+                    geocoder.geocode({'address': String(productData.location)}, function(results, status) {
+                        if (status === 'OK') {
+                            var map = new google.maps.Map(document.getElementById('map'), {
+                                zoom: 18,
+                                center: results[0].geometry.location
+                            });
+                            var marker = new google.maps.Marker({
+                                map: map,
+                                position: results[0].geometry.location
+                            });
+                        } else {
+                            alert('Geocode was not successful for the following reason: ' + status);
+                        }
+                    });
+                });
+            });
+        }
+
         function getProducts(){
             let url = "http://localhost:3030/api/orders/order";
             document.getElementById("products").style.display = "block";

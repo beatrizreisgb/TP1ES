@@ -78,6 +78,16 @@ footer{
     background-color: #0f5c3d;
 }
 
+#map {
+    height: 400px;
+    width: 80%; /* Define uma largura que seja proporcional à tela */
+    max-width: 800px; /* Limita a largura máxima */
+    margin: 20px auto; /* Centraliza a div */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 /* Para telas médias: 2 produtos por linha */
 @media (max-width: 768px) {
     .centered-div {
