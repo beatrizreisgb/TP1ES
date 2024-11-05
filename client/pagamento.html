@@ -89,22 +89,69 @@
     <main>
         <h3>Escolha o método de pagamento: </h3>
         <div id="delivery-payment">
-            <input type="button" class="button" value="Pagar na Entrega">
+            <input type="button" class="button" value="Dinheiro" onclick="placeOrder('Dinheiro')">
             <section id="delivery-payment-section"></section>
         </div>
         <br>
         <div id="card-payment">
-            <input type="button" class="button" value="Cartão de Crédito/Débito">
+            <input type="button" class="button" value="Cartão de Crédito/Débito" onclick="placeOrder('Cartão')">
             <section id="card-payment-section"></section>
         </div>
         <br>
         <div id="pix-payment">
-            <input type="button"class="button" value="PIX">
+            <input type="button"class="button" value="PIX" onclick="placeOrder('Pix')">
             <section id="pix-payment-section"></section>
         </div>
     </main>
     <footer>
         <p>JibLog &copy; 2024</p>
     </footer>
+
+    <script>
+    
+        const selectedProduct = JSON.parse(sessionStorage.getItem('selectedProduct'));
+        
+        // Fazer pedido com o método de pagamento selecionado
+        function placeOrder(paymentMethod) {
+            if (!selectedProduct) {
+                alert("Erro: Nenhum produto selecionado.");
+                return;
+            }
+
+            const url = "http://localhost:3030/api/orders/create";  
+            const orderData = {
+                productId: selectedProduct.id,
+                paymentMethod: paymentMethod
+            };
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(orderData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Erro ao fazer o pedido: " + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert("Pedido realizado com sucesso!");
+            })
+            .catch(error => {
+                console.error("Erro ao fazer o pedido:", error);
+                alert("Erro ao fazer o pedido. Tente novamente.");
+            });
+        }
+
+        if (!selectedProduct) {
+            alert("Nenhum produto foi selecionado.");
+        }
+    </script>
+
+
 </body>
+
     

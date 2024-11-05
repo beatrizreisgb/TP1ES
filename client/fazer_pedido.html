@@ -24,16 +24,63 @@
         <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
     </nav>
 
+    const url = "http://localhost:3030/api/products/"; 
+
     <main>
         <h3>Escolha seu Produto:</h3>
-
-        <div>
-            <label for="product_name"> Nome do Produto:</label>
-            <br><br>
-            <label for="product_description"> Descrição do Produto: </label>
-            <br><br>
-            <label for="product_price"> Preço:</label>
-        </div>
         
+        <div id="product-list"></div>
     </main>
+
+
+    <script>
+        // Listar todos os produtos disponíveis
+        function fetchProducts() {
+            const url = "http://localhost:3030/api/products/"; 
+            fetch(url, {method: "GET"})
+                .then(response => response.json())
+                .then(products => {
+                    displayProducts(products);
+                })
+                .catch(error => console.error("Erro ao buscar produtos:", error));
+        }
+
+        // Exibir os produtos na página
+        function displayProducts(products) {
+            const productList = document.getElementById("product-list");
+
+            products.forEach(product => {
+                const productContainer = document.createElement("div");
+                productContainer.classList.add("product-item");
+                productContainer.style.border = "1px solid #ddd";
+                productContainer.style.margin = "10px";
+                productContainer.style.padding = "10px";
+                productContainer.style.borderRadius = "5px";
+
+                productContainer.innerHTML = `
+                    <p><strong>Nome:</strong> ${product.name}</p>
+                    <p><strong>Descrição:</strong> ${product.description}</p>
+                    <p><strong>Preço:</strong> R$${product.price.toFixed(2)}</p>
+                `;
+
+                // Botão para fazer pedido
+                const orderButton = document.createElement("button");
+                orderButton.textContent = "Fazer Pedido";
+                orderButton.classList.add("button");
+                orderButton.onclick = () => redirectToPayment(product.id);
+
+                productContainer.appendChild(orderButton);
+
+                productList.appendChild(productContainer);
+            });
+        }
+
+        function redirectToPayment(productId) {
+        // Rediciona para 'pagamento.html'
+            window.location.href = `pagamento.html?productId=${productId}`;
+        }
+        
+        window.onload = fetchProducts;
+    </script>
+
 </body>
