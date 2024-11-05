@@ -83,7 +83,6 @@
         <a href="index.html">Início</a>
         <a href="pedido.html">Rastrear Pedidos</a>
         <a id = "myaccount" href="conta.html">Minha Conta</a>
-        <a id = "login" href="login.html">Login</a>
         <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
     </nav>
     <main>
@@ -108,20 +107,21 @@
     </footer>
 
     <script>
-    
-        const selectedProduct = JSON.parse(sessionStorage.getItem('selectedProduct'));
+
+        const productId = window.location.search.substring(1).split('=')[1];
         
         // Fazer pedido com o método de pagamento selecionado
         function placeOrder(paymentMethod) {
-            if (!selectedProduct) {
+            event.preventDefault(); 
+            if (!productId) {
                 alert("Erro: Nenhum produto selecionado.");
                 return;
             }
 
             const url = "http://localhost:3030/api/orders/create";  
             const orderData = {
-                productId: selectedProduct.id,
-                paymentMethod: paymentMethod
+                productId: productId,
+                payment: paymentMethod
             };
 
             fetch(url, {
@@ -129,24 +129,22 @@
                 headers: {
                     "Content-Type": "application/json"
                 },
+                credentials: 'include',
                 body: JSON.stringify(orderData)
             })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error("Erro ao fazer o pedido: " + response.statusText);
+                response.json(); 
+                console.log(response);
+                if(response.status != 200){
+                    alert(response.statusText);
+                } 
+                else{
+                    alert("Pedido feito com sucesso!!")
                 }
-                return response.json();
             })
-            .then(data => {
-                alert("Pedido realizado com sucesso!");
-            })
-            .catch(error => {
-                console.error("Erro ao fazer o pedido:", error);
-                alert("Erro ao fazer o pedido. Tente novamente.");
-            });
         }
 
-        if (!selectedProduct) {
+        if (!productId) {
             alert("Nenhum produto foi selecionado.");
         }
     </script>

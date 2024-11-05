@@ -114,7 +114,7 @@
     <main>
         <div id="myaccount" class="user-account-info"></div>
         <br>
-        <a id = "register-product" class = "button" href = "cadastro_produto.html">Cadastrar produto</a>
+        <a id = "register-product" class = "button">Cadastrar produto</a>
     </main>
 
     <script>
@@ -134,11 +134,14 @@
             const role = data.role;
             console.log(role);
             if (role !== "owner"){
-                document.getElementById("register-product").style.display = "none";
+                document.getElementById("register-product").href = "fazer_pedido.html";
+                document.getElementById("register-product").innerHTML = "Fazer pedido";
                 document.getElementById("pedidos").href = "pedido.html";
                 document.getElementById("pedidos").innerHTML = "Meus pedidos";
             }
             else{
+                document.getElementById("register-product").href = "cadastro_produto.html";
+                document.getElementById("register-product").innerHTML = "Cadastrar produto";
                 document.getElementById("pedidos").href = "meus_produtos_owner.html";
                 document.getElementById("pedidos").innerHTML = "Meus produtos";
             }
