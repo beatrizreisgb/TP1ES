@@ -90,7 +90,7 @@
     </header>
 
     <nav>
-        <a id = "myorders" href="pedido.html">Meus pedidos</a>
+        <a id = "myorders"></a>
         <a id = "login" href="login.html">Login</a>
         <a id = "myaccount" href="conta.html">Minha Conta</a>
         <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
@@ -108,7 +108,29 @@
         </ul>
     </main>
 
-    <script>
+    <script>        
+        let url = 'http://localhost:3030/api/users/myAccount';
+        
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+        })
+        .then(response => response.json())
+        .then(data => {
+            const role = data.role;
+            console.log(role);
+            if (role !== "owner"){
+                document.getElementById("myorders").href = "pedido.html";
+                document.getElementById("myorders").innerHTML = "Meus pedidos";
+            }
+            else{
+                document.getElementById("myorders").href = "meus_produtos_owner.html";
+                document.getElementById("myorders").innerHTML = "Meus produtos";
+            }
+        });
         if (document.cookie == ""){
             document.getElementById("logout").style.display = "none";
             document.getElementById("myaccount").style.display = "none";
