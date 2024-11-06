@@ -81,7 +81,7 @@
     }
 
     .centered-div {
-        flex: 1 1 calc(33.333% - 10px); /* 3 itens por linha, com espaço entre eles */
+        flex: 1 1 calc(33.333% - 10px); 
         padding: 20px;
         border: 1px solid gray;
         background-color: white;
@@ -89,8 +89,19 @@
         border-radius: 5px;
         margin: 5px;
         box-sizing: border-box;
-        width: 20rem;
     }
+
+    @media (max-width: 768px) {
+        .centered-div {
+            flex: 1 1 calc(50% - 10px);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .centered-div {
+            flex: 1 1 100%;
+        }
+    } 
 
 </style>
 
@@ -102,7 +113,7 @@
 
     <nav>
         <a href="index.html">Início</a>
-        <a id = "myaccount" href="conta.html">Minha conta</a>
+        <a id = "myaccount" href="conta.html">Minha Área</a>
         <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
     </nav>
     <main>
@@ -153,7 +164,7 @@
                     productDiv += "<p>R$ " + product.price + "</p>";
                     productDiv += "<p>" + product.location + "</p>";
                     productDiv += "</div>";
-                    rows.push("<div class='product-row'>" + productDiv + "</div>"); 
+                    rows.push(productDiv); 
                 }
 
                 let rowsHtml = '';

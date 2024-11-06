@@ -5,6 +5,7 @@ import { Product } from '@prisma/client';
 class ProductService{
 	async create(body: Product, userId: number){
 		const owner = await prisma.owner.findFirst({where : {userId: userId}});
+		console.log(owner);
 
 		const product = await prisma.product.create({
 			data: {

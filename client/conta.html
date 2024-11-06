@@ -120,7 +120,7 @@
     <script>
         let url = 'http://localhost:3030/api/users/myAccount';
 
-        let str_html = "<h2>Minha Conta</h2>";
+        let str_html = "<h2>Minha Área</h2>";
         
         fetch(url, {
             method: "POST",
@@ -137,13 +137,13 @@
                 document.getElementById("register-product").href = "fazer_pedido.html";
                 document.getElementById("register-product").innerHTML = "Fazer pedido";
                 document.getElementById("pedidos").href = "pedido.html";
-                document.getElementById("pedidos").innerHTML = "Meus pedidos";
+                document.getElementById("pedidos").innerHTML = "Meus Pedidos";
             }
             else{
                 document.getElementById("register-product").href = "cadastro_produto.html";
                 document.getElementById("register-product").innerHTML = "Cadastrar produto";
                 document.getElementById("pedidos").href = "meus_produtos_owner.html";
-                document.getElementById("pedidos").innerHTML = "Meus produtos";
+                document.getElementById("pedidos").innerHTML = "Meus Produtos";
             }
             str_html += "<p>Nome: " + data.name + "</p>";
             str_html += "<p>Email: " + data.email + "</p>";

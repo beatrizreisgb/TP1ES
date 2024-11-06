@@ -140,6 +140,11 @@
             <input type="email" name="email" id="email">
             <label for="cep">CEP:</label>
             <input type="number" name="cep" id="cep">
+            <label for="text">Cliente ou proprietário?</label>
+            <select name="type" id="type">
+                <option value="user">Cliente</option>
+                <option value="owner">Proprietário</option>
+            </select>
             <label for="password">Senha:</label>
             <input type="password" name="password" id="password">
             <label for="password">Confirme sua senha:</label>
@@ -167,7 +172,13 @@
                     return;
                 }
                 
-                const url = "http://localhost:3030/api/users/create";
+                let url = "";
+                role = document.getElementById("type").value
+                if (role == "owner"){
+                    url = "http://localhost:3030/api/owners/create";
+                } else {
+                    url = "http://localhost:3030/api/users/create";
+                }
                 fetch(url, {
                     method: "POST",
                     headers: {

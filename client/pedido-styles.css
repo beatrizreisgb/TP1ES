@@ -54,7 +54,7 @@ footer{
 }
 
 .centered-div {
-    flex: 1 1 calc(33.333% - 10px); /* 3 itens por linha, com espaço entre eles */
+    flex: 1 1 calc(33.333% - 10px); 
     padding: 20px;
     border: 1px solid gray;
     background-color: white;
@@ -80,26 +80,22 @@ footer{
 
 #map {
     height: 400px;
-    width: 80%; /* Define uma largura que seja proporcional à tela */
-    max-width: 800px; /* Limita a largura máxima */
-    margin: 20px auto; /* Centraliza a div */
+    width: 80%; 
+    max-width: 800px; 
+    margin: 20px auto; 
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Para telas médias: 2 produtos por linha */
 @media (max-width: 768px) {
     .centered-div {
         flex: 1 1 calc(50% - 10px);
     }
 }
 
-/* Para telas pequenas: 1 produto por linha */
 @media (max-width: 480px) {
     .centered-div {
         flex: 1 1 100%;
     }
 }
-
-

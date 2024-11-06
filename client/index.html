@@ -92,7 +92,7 @@
     <nav>
         <a id = "myorders"></a>
         <a id = "login" href="login.html">Login</a>
-        <a id = "myaccount" href="conta.html">Minha Conta</a>
+        <a id = "myaccount" href="conta.html">Minha Área</a>
         <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
     </nav>
 
@@ -124,11 +124,11 @@
             console.log(role);
             if (role !== "owner"){
                 document.getElementById("myorders").href = "pedido.html";
-                document.getElementById("myorders").innerHTML = "Meus pedidos";
+                document.getElementById("myorders").innerHTML = "Meus Pedidos";
             }
             else{
                 document.getElementById("myorders").href = "meus_produtos_owner.html";
-                document.getElementById("myorders").innerHTML = "Meus produtos";
+                document.getElementById("myorders").innerHTML = "Meus Produtos";
             }
         });
         if (document.cookie == ""){
