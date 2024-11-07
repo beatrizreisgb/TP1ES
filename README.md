@@ -75,3 +75,13 @@ Diagramas UML
 		<img src = "imgs/uml2.png"/>
 	</div>
  	<p align="center">Diagrama 2: Diagrama de atividades, representando o fluxo de execução do sistema JibLog.</p>
+
+
+Instruções de compilação
+Para executar o programa e visualizar nosso site, são necessários 3 passos:
+
+- No diretório raiz, execute <npm install> no terminal;
+- Ainda no diretório raiz, execute <npm start> no terminal;
+- Para abrir o site, é necessário instalar a extensão "Live Server" na sua IDE. 
+
+Tendo obtido a extensão, basta abrir o arquivo "index.html" com a opção "Open with Live Server".
