@@ -80,8 +80,8 @@ História #4: Como usuário, eu gostaria de poder escolher entre diversas formas
 ### Instruções de compilação
 Para executar o programa e visualizar nosso site, são necessários 3 passos:
 
-- No diretório raiz, execute <npm install> no terminal;
-- Ainda no diretório raiz, execute <npm start> no terminal;
+- No diretório raiz, execute `npm install` no terminal;
+- Ainda no diretório raiz, execute `npm start` no terminal;
 - Para abrir o site, é necessário instalar a extensão "Live Server" na sua IDE. 
 
 Tendo obtido a extensão, basta abrir o arquivo "index.html" com a opção "Open with Live Server".
