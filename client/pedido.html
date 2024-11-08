@@ -114,11 +114,10 @@
                     .then(response => response.json())
                     .then(productData => {
                         return "<div class='centered-div'>" +
-                            "<h2>Produto " + idx + "</h2>" +
+                            "<h4>" + productData.name + "</h4>" +
                             "<p>" + orderData[i].code + "</p>" +
-                            "<p>" + productData.name + "</p>" +
                             "<p><i>" + productData.description + "</i></p>" +
-                            "<p>" + productData.price + "</p></div><br>";
+                            "<p>R$ " + productData.price + "</p></div><br>";
                     });
 
                     fetchPromises.push(productFetch); 

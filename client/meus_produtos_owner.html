@@ -160,9 +160,9 @@
                     let product = data[i];
                     let productDiv = "<div class='centered-div'>";
                     productDiv += "<h4>" + product.name + "</h4>";
-                    productDiv += "<p>" + product.description + "</p>";
+                    productDiv += "<p><i>" + product.description + "</p></i>";
                     productDiv += "<p>R$ " + product.price + "</p>";
-                    productDiv += "<p>" + product.location + "</p>";
+                    productDiv += "<p>CEP da localização atual: " + product.location + "</p>";
                     productDiv += "</div>";
                     rows.push(productDiv); 
                 }
