@@ -51,7 +51,6 @@ História #2: Como proprietário de estabelecimento, eu gostaria de poder cadast
 - Implementar no backend a atualização dos dados de um produto [Beatriz]
 - Criar no frontend a tela de cadastro [Izadora]
 - Criar no frontend a tela de busca de produtos [Izadora]
-- Criar no frontend a tela para que o proprietário atualize os dados do produto [Izadora]
 - Integrar o frontend e o backend [João]
 
 História #3: Como usuário, eu gostaria de visualizar o tempo estimado para uma entrega e a localização do produto
@@ -63,8 +62,7 @@ História #4: Como usuário, eu gostaria de poder escolher entre diversas formas
 - Implementar no backend o formulário de inserção de dados de pagamento [Beatriz]
 - Criar no frontend a tela de seleção da forma de pagamento [Izadora]
 - Integrar o frontend e o backend [João]
-- 
-
+  
 ### Diagramas UML
 <div align="center">
 		<img src = "imgs/uml1.png"/>
