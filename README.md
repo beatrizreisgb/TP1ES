@@ -82,3 +82,5 @@ Para executar o programa e visualizar nosso site, são necessários 3 passos:
 - Ainda no diretório raiz, execute `npm start` no terminal para inicializar o back-end;
 - Para abrir o site, é necessário instalar a extensão "Live Server" na sua IDE. 
 Tendo obtido a extensão, basta abrir o arquivo "index.html" com a opção "Open with Live Server". Em seguida, ao abrir o site, substitua o trecho da URL `127.0.0.1` por `localhost`.
+
+Observação: a API key do Google Maps, necessária para que o rastreamento de pedido funcione corretamente, foi enviada no formulário de review da sprint.
