@@ -1,4 +1,4 @@
-# TP1ES
+# Trabalho prático 1 de Engenharia de Software - JibLog
 
 ### Objetivo e principais features
 O objetivo do trabalho é implementar um sistema de entregas que conecta os usuários que desejam enviar ou receber um produto, cujas principais features serão:
