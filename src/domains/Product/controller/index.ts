@@ -5,66 +5,61 @@ import { verifyJWT } from '../../../middlewares/authentication';
 
 const router = Router();
 
-// get all products
-router.get('/', async(req: Request, res: Response, next: NextFunction) => {
-	try{
-		const owners = await ProductService.findProducts();
-		res.json(owners);
-	}
-	catch(error){
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { name, minPrice, maxPrice } = req.query;
+		const products = await ProductService.findProducts({
+			name:     name as string | undefined,
+			minPrice: minPrice ? +minPrice : undefined,
+			maxPrice: maxPrice ? +maxPrice : undefined,
+		});
+		res.json(products);
+	} catch (error) {
 		next(error);
 	}
 });
 
-// get all products from owner
-router.get('/product', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
-	try{
-		const owners = await ProductService.findProductsByOwner(+req.user.id);
-		res.json(owners);
-	}
-	catch(error){
+router.get('/product', verifyJWT, async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const products = await ProductService.findProductsByOwner(+req.user.id);
+		res.json(products);
+	} catch (error) {
 		next(error);
 	}
 });
 
-// get product by id 
-router.get('/getById/:id', verifyJWT, async(req: Request, res: Response, next: NextFunction) => { 
-	try{
-		const owner = await ProductService.findById(+req.params.id);
-		res.json(owner);
-	}
-	catch(error){
+router.get('/getById/:id', verifyJWT, async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const product = await ProductService.findById(+req.params.id);
+		res.json(product);
+	} catch (error) {
 		next(error);
 	}
 });
 
-// create product
-router.post('/create', verifyJWT, checkUserRole(['admin', 'owner']), async(req: Request, res: Response, next: NextFunction) => {
-	try{
+router.post('/create', verifyJWT, checkUserRole(['admin', 'owner']), async (req: Request, res: Response, next: NextFunction) => {
+	try {
 		await ProductService.create(req.body, +req.user.id);
 		res.json('Produto criado com sucesso!');
-	}
-	catch(error){
+	} catch (error) {
 		next(error);
 	}
 });
 
-router.put('/update/:id', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
-	try{
+router.put('/update/:id', verifyJWT, async (req: Request, res: Response, next: NextFunction) => {
+	try {
 		await ProductService.updateProduct(+req.params.id, req.body);
 		res.json('Produto atualizado');
-	}
-	catch(error){
+	} catch (error) {
 		next(error);
 	}
 });
 
-router.delete('/delete/:id', verifyJWT, async(req: Request, res: Response, next: NextFunction) => {
-	try{
+router.delete('/delete/:id', verifyJWT, async (req: Request, res: Response, next: NextFunction) => {
+	try {
 		await ProductService.deleteProduct(+req.params.id);
 		res.json('Produto deletado');
-	}
-	catch(error){
+	} catch (error) {
 		next(error);
 	}
 });
