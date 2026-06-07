@@ -2,170 +2,82 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JibLog</title>
     <link rel="icon" type="image/x-icon" href="logo.png">
+    <link rel="stylesheet" href="style.css">
 </head>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        header {
-            background-color: #177757;
-            color: #fff; 
-            padding: 20px 0;
-            text-align: center;
-        }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            background-color: #fff;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #177757;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            color: #0f5c3d;
-        }
-
-        main {
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        main h4 {
-            color: #090909;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        ul li {
-            background-color: #fff;
-            margin: 10px 0;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        footer {
-            background-color: #177757;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
-
-        /* .imagem {
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-        } */
-    </style>
 <body>
 
-    <header>
-        <h1>Bem-vindo à JibLog</h1>
-        <img src="logo.png" alt="logo JibLog" width="170" > 
-        <h3>Sua Solução Logística de Confiança!</h3>
-    </header>
+<header>
+    <img src="logo.png" alt="logo JibLog">
+    <h1>JibLog</h1>
+</header>
 
-    <nav>
-        <a id = "myorders"></a>
-        <a id = "login" href="login.html">Login</a>
-        <a id = "myaccount" href="conta.html">Minha Área</a>
-        <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
-    </nav>
+<nav>
+    <a href="index.html">Início</a>
+    <a id="myorders" href="#">Meus Pedidos</a>
+    <a id="myaccount" href="conta.html">Minha Área</a>
+    <a id="login" href="login.html">Login</a>
+    <a id="logout" href="#" class="nav-logout">Logout</a>
+</nav>
 
-    <main>
-        <h4>Nós somos uma empresa especializada em serviços de logística</h4>
+<main>
+    <div class="hero">
+        <h2>Sua Solução Logística de Confiança</h2>
+        <p>Conectamos você aos melhores estabelecimentos com entregas rápidas e rastreamento em tempo real.</p>
+        <a href="fazer_pedido.html" class="btn btn-outline" style="background:rgba(255,255,255,0.15);color:white;border-color:rgba(255,255,255,0.5);">Ver produtos disponíveis</a>
+    </div>
 
-        <ul>
-            <li><strong>Transporte Nacional e Internacional:</strong> Leve suas mercadorias para onde precisam ir, sem complicações.</li>
-            <li><strong>Armazenagem Segura:</strong> Nossas instalações são seguras e bem organizadas, garantindo que seus produtos estejam sempre protegidos.</li>
-            <li><strong>Logística Otimizada:</strong> Entregamos não apenas o que você precisa, mas quando você precisa. Nossa taxa de pontualidade é uma das melhores do setor.</li>
-            <li><strong>Tecnologia de Ponta:</strong> Utilizamos ferramentas de rastreamento que permitem a você acompanhar o status das suas entregas a qualquer momento.</li>
-            <li><strong>Padrões Rigorosos:</strong> Implementamos rigorosos padrões de qualidade em todas as etapas do processo, desde a coleta até a entrega final.</li>
-        </ul>
-    </main>
+    <p class="section-title">Por que escolher a JibLog?</p>
+    <div class="features-grid">
+        <div class="feature-item">
+            <strong>Transporte Nacional</strong>
+            <span>Leve suas mercadorias para onde precisam ir, sem complicações.</span>
+        </div>
+        <div class="feature-item">
+            <strong>Armazenagem Segura</strong>
+            <span>Instalações organizadas e protegidas para seus produtos.</span>
+        </div>
+        <div class="feature-item">
+            <strong>Logística Otimizada</strong>
+            <span>Alta pontualidade nas entregas com rastreamento em tempo real.</span>
+        </div>
+        <div class="feature-item">
+            <strong>Múltiplos Pagamentos</strong>
+            <span>Pix, cartão ou dinheiro — escolha como preferir.</span>
+        </div>
+    </div>
+</main>
 
-    <script>        
-        let url = 'http://localhost:3030/api/users/myAccount';
-        
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
+<footer>
+    <p>JibLog &copy; 2024 — Todos os direitos reservados</p>
+</footer>
+
+<script src="utils.js"></script>
+<script>
+    setupNav();
+
+    // define link "Meus Pedidos" conforme a role
+    if (isLoggedIn()) {
+        fetch(`${API}/users/myAccount`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
         })
-        .then(response => response.json())
+        .then(r => r.ok ? r.json() : null)
         .then(data => {
-            const role = data.role;
-            console.log(role);
-            if (role !== "owner"){
-                document.getElementById("myorders").href = "pedido.html";
-                document.getElementById("myorders").innerHTML = "Meus Pedidos";
-            }
-            else{
-                document.getElementById("myorders").href = "meus_produtos_owner.html";
-                document.getElementById("myorders").innerHTML = "Meus Produtos";
+            if (!data) return;
+            const link = document.getElementById('myorders');
+            if (data.role === 'owner') {
+                link.href = 'meus_produtos_owner.html';
+                link.textContent = 'Meus Produtos';
+            } else {
+                link.href = 'pedido.html';
+                link.textContent = 'Meus Pedidos';
             }
         });
-        if (document.cookie == ""){
-            document.getElementById("logout").style.display = "none";
-            document.getElementById("myaccount").style.display = "none";
-            document.getElementById("myorders").style.display = "none";
-        } else {
-            document.getElementById("login").style.display = "none";
-        }
-        function logout(){
-            let url = "http://localhost:3030/api/users/logout";
-
-            fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
-            })
-            .then(response => {
-                response.json(); 
-                console.log(response);
-                if(response.status != 200){
-                    alert(response.statusText);
-                } 
-                else {
-                    window.location.href = "index.html";
-                }
-            })
-        }
-    </script>
-
-    <footer>
-        <p>JibLog &copy; 2024</p>
-    </footer>
-
+    }
+</script>
 </body>
 </html>
-
-<!--http://localhost:5500/client-->

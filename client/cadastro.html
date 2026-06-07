@@ -1,201 +1,118 @@
 <!DOCTYPE html>
-<html>
-    <html lang="pt-br"> 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>JibLog</title>
-        <link rel="icon" type="image/x-icon" href="logo.png">
-    </head>
-</html>
-<style>
-    body{
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
-
-    header{
-        color: #fff;
-        background-color: #177757;
-        text-align: center;
-        padding: 20px;
-    }
-
-    nav{
-        display: flex;
-        justify-content: center;
-        background-color: #fff;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-    }
-
-    nav a{
-        margin: 0 15px;
-        text-decoration: none;
-        color: #177757;
-        font-weight: bold;
-    }
-
-    nav a:hover{
-        color: #0f5c3d;
-    }
-
-    main {
-        padding: 20px;
-        max-width: 600px; /* Limita a largura para centralização */
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: calc(100vh - 160px); /* Para centralizar verticalmente com o header e footer */
-    }
-
-    form {
-        width: 400px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    footer{
-        background-color: #177757;
-        text-align: center;
-        padding: 10px;
-        position: relative;
-        bottom: 0;
-        width: 100%;
-    }   
-
-        label {
-            font-weight: bold;
-            color: #333;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="number"],
-        input[type="password"] {
-            width: 95%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="number"]:focus,
-        input[type="password"]:focus {
-            border-color: #177757;
-            outline: none;
-            box-shadow: 0 0 5px rgba(23, 119, 87, 0.5);
-        }
-
-        .button {
-            padding: 8px 5px;
-            background-color: #177757;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-            width: 100px;
-        }
-
-        .button:hover {
-            background-color: #0f5c3d;
-        }
-
-
-</style>
- 
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro — JibLog</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-    
-    <header>
-        <h1>JibLog</h1>
-        <img src="logo.png" alt="logo JibLog" width="170" > 
-    </header>
-    
-    <nav>
-        <a href="index.html">Início</a>
-        <a href="login.html">Login</a>
-    </nav>
-    <main>
-        <h2>Cadastro:</h2>
 
-        <form id ="loginregister" onsubmit="register()">
-            <label for="name">Nome completo:</label>
-            <input type="text" name="name" id="name">
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email">
-            <label for="cep">CEP:</label>
-            <input type="number" name="cep" id="cep">
-            <label for="text">Cliente ou proprietário?</label>
-            <select name="type" id="type">
-                <option value="user">Cliente</option>
-                <option value="owner">Proprietário</option>
-            </select>
-            <label for="password">Senha:</label>
-            <input type="password" name="password" id="password">
-            <label for="password">Confirme sua senha:</label>
-            <input type="password" name="password" id="password-verifier">
-            <input type="submit" class="button" value="Cadastre-se">
+<header>
+    <img src="logo.png" alt="logo JibLog">
+    <h1>JibLog</h1>
+</header>
+
+<nav>
+    <a href="index.html">Início</a>
+    <a href="login.html">Login</a>
+</nav>
+
+<main class="centered">
+    <div class="form-card">
+        <h2 class="form-title">Criar conta</h2>
+
+        <div id="error-msg" class="alert alert-error" style="display:none"></div>
+        <div id="success-msg" class="alert alert-success" style="display:none"></div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="name">Nome completo</label>
+                <input type="text" id="name" placeholder="Seu nome" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="seu@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="cep">CEP</label>
+                <input type="number" id="cep" placeholder="00000000" required>
+            </div>
+            <div class="form-group">
+                <label for="type">Tipo de conta</label>
+                <select id="type">
+                    <option value="user">Cliente</option>
+                    <option value="owner">Proprietário de estabelecimento</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            <div class="form-group">
+                <label for="password-confirm">Confirmar senha</label>
+                <input type="password" id="password-confirm" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
         </form>
 
-        <script>
-            function register(){
-                event.preventDefault(); 
-                const name = document.getElementById("name").value; 
-                const email = document.getElementById("email").value; 
-                const address = document.getElementById("cep").value; 
-                const password = document.getElementById("password").value; 
-                const password_verifier = document.getElementById("password-verifier").value; 
+        <a href="login.html" class="form-link">Já tem conta? Faça login</a>
+    </div>
+</main>
 
-                const data = {
-                    name: name,
-                    email: email,
-                    address: address,
-                    password: password,
-                }
-                if (password != password_verifier){
-                    alert("As senhas não coincidem.");
-                    return;
-                }
-                
-                let url = "";
-                role = document.getElementById("type").value
-                if (role == "owner"){
-                    url = "http://localhost:3030/api/owners/create";
-                } else {
-                    url = "http://localhost:3030/api/users/create";
-                }
-                fetch(url, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    credentials: "include",
-                    body: JSON.stringify(data),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    window.href = "login.html";
-                });
+<footer>
+    <p>JibLog &copy; 2024</p>
+</footer>
+
+<script src="utils.js"></script>
+<script>
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const errorEl   = document.getElementById('error-msg');
+        const successEl = document.getElementById('success-msg');
+        errorEl.style.display = 'none';
+        successEl.style.display = 'none';
+
+        const name     = document.getElementById('name').value;
+        const email    = document.getElementById('email').value;
+        const address  = document.getElementById('cep').value;
+        const role     = document.getElementById('type').value;
+        const password = document.getElementById('password').value;
+        const confirm  = document.getElementById('password-confirm').value;
+
+        if (password !== confirm) {
+            errorEl.textContent = 'As senhas não coincidem.';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        const url = role === 'owner'
+            ? `${API}/owners/create`
+            : `${API}/users/create`;
+
+        try {
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ name, email, address, password })
+            });
+
+            if (res.ok) {
+                successEl.textContent = 'Cadastro realizado! Redirecionando para o login...';
+                successEl.style.display = 'block';
+                setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+            } else {
+                const msg = await res.json();
+                errorEl.textContent = msg || 'Erro ao realizar cadastro.';
+                errorEl.style.display = 'block';
             }
-        </script>
-    </Main>
-    <footer>
-        <p>JibLog &copy; 2024</p>
-    </footer>
+        } catch (_) {
+            errorEl.textContent = 'Não foi possível conectar ao servidor.';
+            errorEl.style.display = 'block';
+        }
+    });
+</script>
 </body>
-    
+</html>

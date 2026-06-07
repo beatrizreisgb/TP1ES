@@ -1,84 +1,94 @@
 <!DOCTYPE html>
-<html>
-    <html lang="pt-br"> 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>JibLog</title>
-        <link rel="stylesheet" href="pedido-styles.css">
-
-    </head>
-</html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos — JibLog</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
 <header>
+    <img src="logo.png" alt="logo JibLog">
     <h1>JibLog</h1>
-    <img src="logo.png" alt="logo JibLog" width="170" > 
 </header>
 
-<body>
-    <nav>
-        <a href="index.html">Início</a>
-        <a id = "myorders" href="pedido.html">Meus Pedidos</a>
-        <a id = "myaccount" href="conta.html">Minha Área</a>
-        <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
-    </nav>
+<nav>
+    <a href="index.html">Início</a>
+    <a href="pedido.html" id="myorders">Meus Pedidos</a>
+    <a href="conta.html" id="myaccount">Minha Área</a>
+    <a id="logout" href="#" class="nav-logout">Logout</a>
+</nav>
 
-    <main>
-        <h3>Escolha seu Produto:</h3>
-        
-        <div id="product-list"></div>
-    </main>
+<main>
+    <p class="section-title">Produtos disponíveis</p>
 
+    <div class="search-bar">
+        <input type="text" id="filter-name" placeholder="Buscar por nome...">
+        <input type="number" id="filter-min" placeholder="Preço mín." style="max-width:130px">
+        <input type="number" id="filter-max" placeholder="Preço máx." style="max-width:130px">
+        <button class="btn btn-outline" onclick="loadProducts()">Filtrar</button>
+    </div>
 
-    <script>
-        // Listar todos os produtos disponíveis
-        function fetchProducts() {
-            const url = "http://localhost:3030/api/products/"; 
-            fetch(url, {method: "GET"})
-                .then(response => response.json())
-                .then(products => {
-                    displayProducts(products);
-                })
-                .catch(error => console.error("Erro ao buscar produtos:", error));
+    <div id="product-list" class="product-grid">
+        <div class="loading">Carregando produtos...</div>
+    </div>
+</main>
+
+<footer>
+    <p>JibLog &copy; 2024</p>
+</footer>
+
+<script src="utils.js"></script>
+<script>
+    setupNav();
+
+    async function loadProducts() {
+        const listEl  = document.getElementById('product-list');
+        listEl.innerHTML = '<div class="loading">Carregando produtos...</div>';
+
+        const name     = document.getElementById('filter-name').value.trim();
+        const minPrice = document.getElementById('filter-min').value;
+        const maxPrice = document.getElementById('filter-max').value;
+
+        const params = new URLSearchParams();
+        if (name)     params.append('name', name);
+        if (minPrice) params.append('minPrice', minPrice);
+        if (maxPrice) params.append('maxPrice', maxPrice);
+
+        try {
+            const res = await fetch(`${API}/products?${params.toString()}`);
+            if (!res.ok) throw new Error();
+            const products = await res.json();
+
+            if (!products.length) {
+                listEl.innerHTML = `
+                    <div class="empty-state" style="grid-column:1/-1">
+                        <div class="icon">🔍</div>
+                        <p>Nenhum produto encontrado com esses filtros.</p>
+                    </div>`;
+                return;
+            }
+
+            listEl.innerHTML = products.map(p => `
+                <div class="product-card">
+                    <h4>${p.name}</h4>
+                    <p class="desc">${p.description}</p>
+                    <p class="stock">${p.quantity > 0 ? `${p.quantity} em estoque` : '<span style="color:#dc2626">Sem estoque</span>'}</p>
+                    <p class="price">R$ ${Number(p.price).toFixed(2)}</p>
+                    ${p.quantity > 0
+                        ? `<a href="pagamento.html?productId=${p.id}" class="btn btn-primary btn-block">Fazer Pedido</a>`
+                        : `<button class="btn btn-block" disabled style="background:var(--border);color:var(--text-muted);cursor:not-allowed">Indisponível</button>`
+                    }
+                </div>
+            `).join('');
+        } catch (_) {
+            listEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><p>Erro ao carregar produtos.</p></div>';
         }
+    }
 
-        // Exibir os produtos na página
-        function displayProducts(products) {
-            const productList = document.getElementById("product-list");
-
-            products.forEach(product => {
-                const productContainer = document.createElement("div");
-                productContainer.classList.add("product-item");
-                productContainer.style.border = "1px solid #ddd";
-                productContainer.style.margin = "10px";
-                productContainer.style.padding = "10px";
-                productContainer.style.borderRadius = "5px";
-
-                productContainer.innerHTML = `
-                    <p><strong>Nome:</strong> ${product.name}</p>
-                    <p><strong>Descrição:</strong> ${product.description}</p>
-                    <p><strong>Preço:</strong> R$${product.price.toFixed(2)}</p>
-                `;
-
-                // Botão para fazer pedido
-                const orderButton = document.createElement("button");
-                orderButton.textContent = "Fazer Pedido";
-                orderButton.classList.add("button");
-                orderButton.onclick = () => redirectToPayment(product.id);
-
-                productContainer.appendChild(orderButton);
-
-                productList.appendChild(productContainer);
-            });
-        }
-
-        function redirectToPayment(productId) {
-        // Rediciona para 'pagamento.html'
-            window.location.href = `pagamento.html?productId=${productId}`;
-        }
-        
-        window.onload = fetchProducts;
-    </script>
-
+    loadProducts();
+</script>
 </body>
+</html>

@@ -1,167 +1,169 @@
 <!DOCTYPE html>
-<html>
-    <html lang="pt-br"> 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>JibLog</title>
-        <link rel="icon" type="image/x-icon" href="logo.png">
-        <link rel="stylesheet" href="pedido-styles.css">
-    </head>
-</html>
-    
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Pedidos — JibLog</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
 <header>
+    <img src="logo.png" alt="logo JibLog">
     <h1>JibLog</h1>
-    <img src="logo.png" alt="logo JibLog" width="170" > 
 </header>
 
 <nav>
     <a href="index.html">Início</a>
-    <a id = "myaccount" href="conta.html">Minha Área</a>
-    <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
+    <a href="conta.html" id="myaccount">Minha Área</a>
+    <a href="pedido.html">Meus Pedidos</a>
+    <a id="logout" href="#" class="nav-logout">Logout</a>
 </nav>
 
-<body>
+<main>
+    <!-- Busca por código -->
+    <p class="section-title">Rastrear pedido pelo código</p>
+    <div class="search-bar">
+        <input type="text" id="code" placeholder="Cole o código UUID do seu pedido...">
+        <button class="btn btn-primary" onclick="buscarPedido()">Buscar</button>
+    </div>
 
-    <main>
-        <h3>Digite o código do seu pedido para rastreá-lo:</h3>
-        <input type="text" name="código_do_produto" id = "code">
-        <br><br>
-        <input type="button" class="button" value="BUSCAR" onclick="getMapProduct()">
+    <div id="track-result" style="display:none">
+        <div class="card">
+            <div id="track-info"></div>
+            <div id="map" style="display:none"></div>
+        </div>
+    </div>
 
-    </main>
+    <div id="track-error" class="alert alert-error" style="display:none"></div>
 
-    <div id = "map" style="display: none"></div>
-    <div id = "products"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6us_c7jBrjT1_CtV22YodcL4P9t4WgoA"></script>
-    <script>
-        document.getElementById("products").style.display = "none";
-        if (document.cookie == ""){
-            document.getElementById("logout").style.display = "none";
-            document.getElementById("myaccount").style.display = "none";
-        } 
+    <hr style="border:none;border-top:1px solid var(--border);margin:32px 0">
 
-        function getMapProduct(event) {
-            
-            let url = "http://localhost:3030/api/orders/" + document.getElementById("code").value;
-            console.log(url);
-            fetch(url, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
-            })
-            .then(response => response.json())
-            .then(orderData => {
-                console.log(orderData);
-                url = "http://localhost:3030/api/products/getById/" + orderData.productId;
-                fetch(url, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    credentials: "include"
-                })
-                .then(response => response.json())
-                .then(productData => {
-                    var geocoder = new google.maps.Geocoder();
-                    console.log(productData);
-                    document.getElementById("map").style.display = "block";
-                    geocoder.geocode({'address': String(productData.location)}, function(results, status) {
-                        if (status === 'OK') {
-                            var map = new google.maps.Map(document.getElementById('map'), {
-                                zoom: 18,
-                                center: results[0].geometry.location
-                            });
-                            var marker = new google.maps.Marker({
-                                map: map,
-                                position: results[0].geometry.location
-                            });
-                        } else {
-                            alert('Geocode was not successful for the following reason: ' + status);
-                        }
-                    });
+    <!-- Lista de pedidos -->
+    <p class="section-title">Todos os meus pedidos</p>
+    <div id="orders-list" class="order-list">
+        <div class="loading">Carregando pedidos...</div>
+    </div>
+</main>
+
+<footer>
+    <p>JibLog &copy; 2024</p>
+</footer>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6us_c7jBrjT1_CtV22YodcL4P9t4WgoA"></script>
+<script src="utils.js"></script>
+<script>
+    if (!isLoggedIn()) window.location.href = 'login.html';
+    setupNav();
+
+    async function buscarPedido() {
+        const code = document.getElementById('code').value.trim();
+        const resultEl = document.getElementById('track-result');
+        const errorEl  = document.getElementById('track-error');
+        const infoEl   = document.getElementById('track-info');
+        const mapEl    = document.getElementById('map');
+
+        resultEl.style.display = 'none';
+        errorEl.style.display  = 'none';
+        mapEl.style.display    = 'none';
+
+        if (!code) { errorEl.textContent = 'Digite o código do pedido.'; errorEl.style.display = 'block'; return; }
+
+        try {
+            const res = await fetch(`${API}/orders/${code}`, {
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            });
+            if (!res.ok) throw new Error('Pedido não encontrado.');
+            const order = await res.json();
+            if (!order) throw new Error('Pedido não encontrado.');
+
+            const pRes = await fetch(`${API}/products/getById/${order.productId}`, {
+                credentials: 'include'
+            });
+            const product = pRes.ok ? await pRes.json() : null;
+
+            infoEl.innerHTML = `
+                <div style="margin-bottom:16px">
+                    <h4 style="font-size:1rem;font-weight:700;margin-bottom:8px">
+                        ${product ? product.name : 'Produto #' + order.productId}
+                        &nbsp;${statusBadge(order.status)}
+                    </h4>
+                    <p style="font-size:0.85rem;color:var(--text-muted);font-family:monospace">${order.code}</p>
+                    <p style="font-size:0.875rem;margin-top:8px">Pagamento: <strong>${order.payment}</strong></p>
+                    <p style="font-size:0.875rem">Total: <strong>R$ ${Number(order.delivery).toFixed(2)}</strong></p>
+                </div>
+            `;
+            resultEl.style.display = 'block';
+
+            if (product && product.location) {
+                mapEl.style.display = 'block';
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ address: String(product.location) }, function(results, status) {
+                    if (status === 'OK') {
+                        const map = new google.maps.Map(mapEl, {
+                            zoom: 15,
+                            center: results[0].geometry.location
+                        });
+                        new google.maps.Marker({ map, position: results[0].geometry.location });
+                    } else {
+                        mapEl.style.display = 'none';
+                    }
                 });
+            }
+        } catch (err) {
+            errorEl.textContent = err.message || 'Erro ao buscar pedido.';
+            errorEl.style.display = 'block';
+        }
+    }
+
+    async function loadOrders() {
+        const listEl = document.getElementById('orders-list');
+        try {
+            const res = await fetch(`${API}/orders/order`, {
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
             });
+            if (!res.ok) { listEl.innerHTML = '<p style="color:var(--text-muted)">Erro ao carregar pedidos.</p>'; return; }
+            const orders = await res.json();
+
+            if (!orders.length) {
+                listEl.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📦</div>
+                        <p>Você ainda não fez nenhum pedido.</p>
+                        <a href="fazer_pedido.html" class="btn btn-primary">Ver produtos disponíveis</a>
+                    </div>`;
+                return;
+            }
+
+            const detailed = await Promise.all(orders.map(async order => {
+                try {
+                    const r = await fetch(`${API}/products/getById/${order.productId}`, { credentials: 'include' });
+                    return { order, product: r.ok ? await r.json() : null };
+                } catch (_) { return { order, product: null }; }
+            }));
+
+            listEl.innerHTML = detailed.map(({ order, product }) => `
+                <div class="order-item">
+                    <div class="order-item-info">
+                        <h4>${product ? product.name : 'Produto #' + order.productId}</h4>
+                        <div class="code">${order.code}</div>
+                        <div class="meta">Pagamento: ${order.payment}</div>
+                    </div>
+                    <div class="order-item-right">
+                        ${statusBadge(order.status)}
+                        <span class="order-total">R$ ${Number(order.delivery).toFixed(2)}</span>
+                    </div>
+                </div>
+            `).join('');
+        } catch (_) {
+            listEl.innerHTML = '<p style="color:var(--text-muted)">Erro ao carregar pedidos.</p>';
         }
+    }
 
-        function getProducts(){
-            let url = "http://localhost:3030/api/orders/order";
-            document.getElementById("products").style.display = "block";
-            fetch(url, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
-            })
-            .then(response => response.json())
-            .then(orderData => {
-                let fetchPromises = []; 
-
-                for (let i in orderData) {
-                    let idx = parseInt(i) + 1; 
-                    let productId = orderData[i].productId;
-                    let productFetch = fetch("http://localhost:3030/api/products/getById/" + productId, {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        credentials: "include"
-                    })
-                    .then(response => response.json())
-                    .then(productData => {
-                        return "<div class='centered-div'>" +
-                            "<h4>" + productData.name + "</h4>" +
-                            "<p>" + orderData[i].code + "</p>" +
-                            "<p><i>" + productData.description + "</i></p>" +
-                            "<p>R$ " + productData.price + "</p></div><br>";
-                    });
-
-                    fetchPromises.push(productFetch); 
-                }
-
-                return Promise.all(fetchPromises);
-            })
-            .then(productDivs => {
-                let rowsHtml = '';
-                for (let i = 0; i < productDivs.length; i += 3) {
-                    let rowDivs = productDivs.slice(i, i + 3).join('');
-                    rowsHtml += "<div class='product-row'>" + rowDivs + "</div>";
-                }
-                document.getElementById("products").innerHTML = rowsHtml;
-            })
-            .catch(error => {
-                console.error('Error fetching product data:', error);
-            });
-        }
-        function logout(){
-            const url = "http://localhost:3030/api/users/logout";
-
-            fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
-            })
-            .then(response => {
-                response.json(); 
-                console.log(response);
-                if(response.status != 200){
-                    alert(response.statusText);
-                } 
-                else {
-                    window.location.href = "index.html";
-                }
-            })
-        }
-        getProducts();
-    </script>
-    <footer>
-        <p>JibLog &copy; 2024</p>
-    </footer>
+    loadOrders();
+</script>
 </body>
-</body>
+</html>

@@ -1,155 +1,111 @@
 <!DOCTYPE html>
-<html>
-    <html lang="pt-br"> 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>JibLog</title>
-    </head>
-</html>
-<style>
-    body{
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
-
-    header{
-        color: #fff;
-        background-color: #177757;
-        text-align: center;
-        padding: 20px;
-    }
-
-    nav{
-        display: flex;
-        justify-content: center;
-        background-color: #fff;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-    }
-
-        nav a{
-        margin: 0 15px;
-        text-decoration: none;
-        color: #177757;
-        font-weight: bold;
-        }
-
-        nav a:hover{
-        color: #0f5c3d;
-    }
-
-    main{
-        padding: 20px;
-        max-width: 800px;
-        margin: 0 auto;
-        }
-
-    footer{
-        background-color: #177757;
-        text-align: center;
-        padding: 10px;
-        position: relative;
-        bottom: 0;
-        width: 100%;
-    }
-
-    .button{
-        padding: 10px 20px;
-        background-color: #177757;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    
-    .button:hover{
-        background-color: #0f5c3d;
-    }
-
-</style>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento — JibLog</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-    <header>
-        <h1>JibLog</h1>
-        <img src="logo.png" alt="logo JibLog" width="170" > 
-    </header>
-    
-    <nav>
-        <a href="index.html">Início</a>
-        <a href="pedido.html">Rastrear Pedidos</a>
-        <a id = "myaccount" href="conta.html">Minha Área</a>
-        <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
-    </nav>
-    <main>
-        <h3>Escolha o método de pagamento: </h3>
-        <div id="delivery-payment">
-            <input type="button" class="button" value="Dinheiro" onclick="placeOrder('Dinheiro')">
-            <section id="delivery-payment-section"></section>
+
+<header>
+    <img src="logo.png" alt="logo JibLog">
+    <h1>JibLog</h1>
+</header>
+
+<nav>
+    <a href="index.html">Início</a>
+    <a href="fazer_pedido.html">Produtos</a>
+    <a href="pedido.html" id="myorders">Meus Pedidos</a>
+    <a href="conta.html" id="myaccount">Minha Área</a>
+    <a id="logout" href="#" class="nav-logout">Logout</a>
+</nav>
+
+<main class="centered">
+    <div style="width:100%;max-width:520px">
+        <div id="product-info" class="card" style="margin-bottom:20px">
+            <div class="loading">Carregando produto...</div>
         </div>
-        <br>
-        <div id="card-payment">
-            <input type="button" class="button" value="Cartão de Crédito/Débito" onclick="placeOrder('Cartão')">
-            <section id="card-payment-section"></section>
+
+        <div class="card">
+            <p class="card-title">Escolha o método de pagamento</p>
+            <div id="payment-options" class="payment-grid">
+                <button class="payment-option" onclick="placeOrder('Dinheiro')">
+                    <span class="payment-icon">💵</span>Dinheiro
+                </button>
+                <button class="payment-option" onclick="placeOrder('Cartão')">
+                    <span class="payment-icon">💳</span>Cartão
+                </button>
+                <button class="payment-option" onclick="placeOrder('Pix')">
+                    <span class="payment-icon">⚡</span>Pix
+                </button>
+            </div>
+            <div id="error-msg" class="alert alert-error" style="display:none;margin-top:16px"></div>
         </div>
-        <br>
-        <div id="pix-payment">
-            <input type="button"class="button" value="PIX" onclick="placeOrder('Pix')">
-            <section id="pix-payment-section"></section>
-        </div>
-    </main>
-    <footer>
-        <p>JibLog &copy; 2024</p>
-    </footer>
+    </div>
+</main>
 
-    <script>
+<footer>
+    <p>JibLog &copy; 2024</p>
+</footer>
 
-        const productId = window.location.search.substring(1).split('=')[1];
-        
-        // Fazer pedido com o método de pagamento selecionado
-        function placeOrder(paymentMethod) {
-            event.preventDefault(); 
-            if (!productId) {
-                alert("Erro: Nenhum produto selecionado.");
-                return;
-            }
+<script src="utils.js"></script>
+<script>
+    if (!isLoggedIn()) window.location.href = 'login.html';
+    setupNav();
 
-            const url = "http://localhost:3030/api/orders/create";  
-            const orderData = {
-                productId: productId,
-                payment: paymentMethod
-            };
+    const params    = new URLSearchParams(window.location.search);
+    const productId = params.get('productId');
 
-            fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+    if (!productId) {
+        document.getElementById('product-info').innerHTML = '<p class="alert alert-error">Nenhum produto selecionado.</p>';
+        document.getElementById('payment-options').style.display = 'none';
+    } else {
+        fetch(`${API}/products/getById/${productId}`, { credentials: 'include' })
+            .then(r => r.ok ? r.json() : null)
+            .then(p => {
+                if (!p) { document.getElementById('product-info').innerHTML = '<p>Produto não encontrado.</p>'; return; }
+                document.getElementById('product-info').innerHTML = `
+                    <p class="card-title">Resumo do pedido</p>
+                    <p style="font-weight:700;font-size:1rem">${p.name}</p>
+                    <p style="font-size:0.875rem;color:var(--text-muted);margin-top:4px">${p.description}</p>
+                    <p style="margin-top:12px;font-size:0.9rem">Produto: <strong>R$ ${Number(p.price).toFixed(2)}</strong></p>
+                    <p style="font-size:0.9rem">Taxa de entrega: <strong>R$ 20,00</strong></p>
+                    <p style="font-size:1rem;font-weight:700;color:var(--primary);margin-top:8px">
+                        Total: R$ ${(Number(p.price) + 20).toFixed(2)}
+                    </p>
+                `;
+            });
+    }
+
+    async function placeOrder(paymentMethod) {
+        const errorEl = document.getElementById('error-msg');
+        errorEl.style.display = 'none';
+
+        if (!productId) return;
+
+        try {
+            const res = await fetch(`${API}/orders/create`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify(orderData)
-            })
-            .then(response => {
-                response.json(); 
-                console.log(response);
-                if(response.status != 200){
-                    alert(response.statusText);
-                } 
-                else{
-                    alert("Pedido feito com sucesso!!")
-                }
-            })
+                body: JSON.stringify({ productId, payment: paymentMethod })
+            });
+
+            if (res.ok) {
+                showToast('Pedido realizado com sucesso!');
+                setTimeout(() => { window.location.href = 'pedido.html'; }, 1500);
+            } else {
+                const msg = await res.json();
+                errorEl.textContent = msg || 'Erro ao realizar pedido.';
+                errorEl.style.display = 'block';
+            }
+        } catch (_) {
+            errorEl.textContent = 'Não foi possível conectar ao servidor.';
+            errorEl.style.display = 'block';
         }
-
-        if (!productId) {
-            alert("Nenhum produto foi selecionado.");
-        }
-    </script>
-
-
+    }
+</script>
 </body>
-
-    
+</html>

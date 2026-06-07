@@ -1,185 +1,161 @@
 <!DOCTYPE html>
-<html>
-    <html lang="pt-br"> 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>JibLog</title>
-        <link rel="icon" type="image/x-icon" href="logo.png">
-    </head>
-</html>
-<style>
-    body{
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
-
-    header{
-        color: #fff;
-        background-color: #177757;
-        text-align: center;
-        padding: 20px;
-    }
-
-    nav {
-        display: flex;
-        justify-content: center;
-        background-color: #fff;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-        }
-
-        nav a {
-        margin: 0 15px;
-        text-decoration: none;
-        color: #177757;
-        font-weight: bold;
-        }
-
-        nav a:hover {
-        color: #0f5c3d;
-    }
-
-    main {
-        padding: 20px;
-        max-width: 800px;
-        margin: 0 auto;
-        }
-
-    footer{
-        background-color: #177757;
-        text-align: center;
-        padding: 10px;
-        position: relative;
-        bottom: 0;
-        width: 100%;
-    }
-    .user-account-info {
-      width: 300px;
-      padding: 20px;
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      font-family: Arial, sans-serif;
-      color: #333;
-    }
-
-    .button {
-        padding: 8px 5px;
-        background-color: #177757;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-        width: 100px;
-        text-decoration: none;
-    }
-
-    .user-account-info h2 {
-        font-size: 1.5em;
-        margin: 0 0 10px;
-    }
-
-    .user-account-info p {
-      margin: 8px 0;
-      font-size: 1em;
-      line-height: 1.4;
-    }
-
-    .user-account-info .username {
-      font-weight: bold;
-      color: #333;
-    }
-</style>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Área — JibLog</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-    <header>
-        <h1>JibLog</h1>
-        <img src="logo.png" alt="logo JibLog" width="170" > 
-    </header>
-    
-    <nav>
-        <a href="index.html">Início</a>
-        <a id = "pedidos"></a>
-        <a id = "login" href="login.html">Login</a>
-        <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
-    </nav>
 
-    <main>
-        <div id="myaccount" class="user-account-info"></div>
-        <br>
-        <a id = "register-product" class = "button">Cadastrar produto</a>
-    </main>
+<header>
+    <img src="logo.png" alt="logo JibLog">
+    <h1>JibLog</h1>
+</header>
 
-    <script>
-        let url = 'http://localhost:3030/api/users/myAccount';
+<nav>
+    <a href="index.html">Início</a>
+    <a id="myaccount" href="conta.html">Minha Área</a>
+    <a id="action-link" href="#"></a>
+    <a id="logout" href="#" class="nav-logout">Logout</a>
+</nav>
 
-        let str_html = "<h2>Minha Área</h2>";
-        
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        })
-        .then(response => response.json())
-        .then(data => {
-            const role = data.role;
-            console.log(role);
-            if (role !== "owner"){
-                document.getElementById("register-product").href = "fazer_pedido.html";
-                document.getElementById("register-product").innerHTML = "Fazer pedido";
-                document.getElementById("pedidos").href = "pedido.html";
-                document.getElementById("pedidos").innerHTML = "Meus Pedidos";
+<main>
+    <div id="loading" class="loading">Carregando...</div>
+    <div id="content" style="display:none">
+
+        <!-- Perfil -->
+        <div class="profile-card" id="profile-card"></div>
+
+        <!-- Botão de ação -->
+        <div style="margin-bottom: 28px">
+            <a id="cta-btn" href="#" class="btn btn-primary"></a>
+        </div>
+
+        <!-- Pedidos do usuário (só aparece para role=user) -->
+        <div id="orders-section" style="display:none">
+            <p class="section-title">Meus Pedidos</p>
+            <div id="orders-list" class="order-list">
+                <div class="loading">Carregando pedidos...</div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer>
+    <p>JibLog &copy; 2024</p>
+</footer>
+
+<script src="utils.js"></script>
+<script>
+    if (!isLoggedIn()) window.location.href = 'login.html';
+
+    setupNav();
+
+    async function loadPage() {
+        let data;
+        try {
+            const res = await fetch(`${API}/users/myAccount`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            });
+            if (!res.ok) { window.location.href = 'login.html'; return; }
+            data = await res.json();
+        } catch (_) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+
+        // Perfil
+        const initial = data.name ? data.name[0].toUpperCase() : '?';
+        document.getElementById('profile-card').innerHTML = `
+            <div class="profile-avatar">${initial}</div>
+            <div class="profile-info">
+                <h2>${data.name}</h2>
+                <p>${data.email}</p>
+                <p style="margin-top:4px;font-size:0.8rem;color:var(--text-muted)">CEP: ${data.address}</p>
+            </div>
+            <span class="profile-role">${roleLabel(data.role)}</span>
+        `;
+
+        const ctaBtn     = document.getElementById('cta-btn');
+        const actionLink = document.getElementById('action-link');
+
+        if (data.role === 'owner') {
+            ctaBtn.href      = 'cadastro_produto.html';
+            ctaBtn.textContent = '+ Cadastrar Produto';
+            actionLink.href  = 'meus_produtos_owner.html';
+            actionLink.textContent = 'Meus Produtos';
+        } else {
+            ctaBtn.href      = 'fazer_pedido.html';
+            ctaBtn.textContent = '+ Fazer Pedido';
+            actionLink.href  = 'pedido.html';
+            actionLink.textContent = 'Rastrear Pedido';
+            document.getElementById('orders-section').style.display = 'block';
+            loadOrders();
+        }
+    }
+
+    async function loadOrders() {
+        const listEl = document.getElementById('orders-list');
+        try {
+            const res = await fetch(`${API}/orders/order`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            });
+            if (!res.ok) { listEl.innerHTML = '<p style="color:var(--text-muted)">Erro ao carregar pedidos.</p>'; return; }
+            const orders = await res.json();
+
+            if (!orders.length) {
+                listEl.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📦</div>
+                        <p>Você ainda não fez nenhum pedido.</p>
+                        <a href="fazer_pedido.html" class="btn btn-primary">Fazer meu primeiro pedido</a>
+                    </div>`;
+                return;
             }
-            else{
-                document.getElementById("register-product").href = "cadastro_produto.html";
-                document.getElementById("register-product").innerHTML = "Cadastrar produto";
-                document.getElementById("pedidos").href = "meus_produtos_owner.html";
-                document.getElementById("pedidos").innerHTML = "Meus Produtos";
-            }
-            str_html += "<p>Nome: " + data.name + "</p>";
-            str_html += "<p>Email: " + data.email + "</p>";
-            document.getElementById("myaccount").innerHTML = str_html 
-        });
 
-        function logout(){
-            let url = "http://localhost:3030/api/users/logout";
-
-            fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
-            })
-            .then(response => {
-                response.json(); 
-                if(response.status != 200){
-                    alert(response.statusText);
-                } 
-                else {
-                    window.location.href = "index.html";
+            // busca detalhes dos produtos em paralelo
+            const detailed = await Promise.all(orders.map(async order => {
+                try {
+                    const r = await fetch(`${API}/products/getById/${order.productId}`, {
+                        credentials: 'include'
+                    });
+                    const product = r.ok ? await r.json() : null;
+                    return { order, product };
+                } catch (_) {
+                    return { order, product: null };
                 }
-            })
-        }
-    </script>
-    <script>
-        if (document.cookie){
-            document.getElementById("login").style.display = "none";
-        }
-    </script>
+            }));
 
-    <footer>
-        <p>JibLog &copy; 2024</p>
-    </footer>
+            listEl.innerHTML = detailed.map(({ order, product }) => `
+                <div class="order-item">
+                    <div class="order-item-info">
+                        <h4>${product ? product.name : 'Produto #' + order.productId}</h4>
+                        <div class="code">${order.code}</div>
+                        <div class="meta">Pagamento: ${order.payment}</div>
+                    </div>
+                    <div class="order-item-right">
+                        ${statusBadge(order.status)}
+                        <span class="order-total">R$ ${Number(order.delivery).toFixed(2)}</span>
+                    </div>
+                </div>
+            `).join('');
+
+        } catch (_) {
+            listEl.innerHTML = '<p style="color:var(--text-muted)">Erro ao carregar pedidos.</p>';
+        }
+    }
+
+    loadPage();
+</script>
 </body>
-    
 </html>

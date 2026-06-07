@@ -1,189 +1,78 @@
 <!DOCTYPE html>
-<html>
-    <html lang="pt-br"> 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>JibLog</title>
-        <link rel="icon" type="image/x-icon" href="logo.png">
-    </head>
-</html>
-<style>
-    body{
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
-
-    header{
-        color: #fff;
-        background-color: #177757;
-        text-align: center;
-        padding: 20px;
-    }
-
-    nav{
-        display: flex;
-        justify-content: center;
-        background-color: #fff;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-    }
-
-        nav a{
-        margin: 0 15px;
-        text-decoration: none;
-        color: #177757;
-        font-weight: bold;
-        }
-
-        nav a:hover{
-        color: #0f5c3d;
-    }
-
-    main{
-        padding: 20px;
-        max-width: 800px;
-        margin: 0 auto;
-        }
-
-    footer{
-        background-color: #177757;
-        text-align: center;
-        padding: 10px;
-        position: relative;
-        bottom: 0;
-        width: 100%;
-    }
-
-    .button{
-        padding: 10px 20px;
-        background-color: #177757;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    
-    .button:hover{
-        background-color: #0f5c3d;
-    }
-
-    .product-row {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        margin-bottom: 20px;
-    }
-
-    .centered-div {
-        flex: 1 1 calc(33.333% - 10px); 
-        padding: 20px;
-        border: 1px solid gray;
-        background-color: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        margin: 5px;
-        box-sizing: border-box;
-    }
-
-    @media (max-width: 768px) {
-        .centered-div {
-            flex: 1 1 calc(50% - 10px);
-        }
-    }
-
-    @media (max-width: 480px) {
-        .centered-div {
-            flex: 1 1 100%;
-        }
-    } 
-
-</style>
-
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Produtos — JibLog</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-    <header>
-        <h1>JibLog</h1>
-        <img src="logo.png" alt="logo JibLog" width="170" > 
-    </header>
 
-    <nav>
-        <a href="index.html">Início</a>
-        <a id = "myaccount" href="conta.html">Minha Área</a>
-        <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
-    </nav>
-    <main>
-        <h3>Meus Produtos:</h3>
-    </main>
+<header>
+    <img src="logo.png" alt="logo JibLog">
+    <h1>JibLog</h1>
+</header>
 
-    <div id = "products"></div>
-    
-    <script>
-        function logout(){
-            let url = "http://localhost:3030/api/users/logout";
-            
-            fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
-            })
-            .then(response => {
-                response.json(); 
-                console.log(response);
-                if(response.status != 200){
-                    alert(response.statusText);
-                } 
-                else {
-                    window.location.href = "index.html";
-                }
-            })
-        }
-        const url = "http://localhost:3030/api/owners/product";
-        document.getElementById("products").style.display = "block";
-        let productFetch = fetch(url, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
-            })
-            .then(response => response.json())
-            .then(data => {
-                let rows = []; 
-                for (let i in data){
-                    let product = data[i];
-                    let productDiv = "<div class='centered-div'>";
-                    productDiv += "<h4>" + product.name + "</h4>";
-                    productDiv += "<p><i>" + product.description + "</p></i>";
-                    productDiv += "<p>R$ " + product.price + "</p>";
-                    productDiv += "<p>CEP da localização atual: " + product.location + "</p>";
-                    productDiv += "</div>";
-                    rows.push(productDiv); 
-                }
+<nav>
+    <a href="index.html">Início</a>
+    <a href="meus_produtos_owner.html">Meus Produtos</a>
+    <a href="cadastro_produto.html">+ Cadastrar Produto</a>
+    <a href="conta.html" id="myaccount">Minha Área</a>
+    <a id="logout" href="#" class="nav-logout">Logout</a>
+</nav>
 
-                let rowsHtml = '';
-                for (let i = 0; i < rows.length; i += 3) {
-                    let rowDivs = rows.slice(i, i + 3).join('');
-                    rowsHtml += "<div class='product-row'>" + rowDivs + "</div>";
-                }
-                document.getElementById("products").innerHTML = rowsHtml;
-                // console.log(rows);
+<main>
+    <p class="section-title">Meus Produtos</p>
+    <div id="product-list" class="product-grid">
+        <div class="loading">Carregando produtos...</div>
+    </div>
+</main>
+
+<footer>
+    <p>JibLog &copy; 2024</p>
+</footer>
+
+<script src="utils.js"></script>
+<script>
+    if (!isLoggedIn()) window.location.href = 'login.html';
+    setupNav();
+
+    async function loadProducts() {
+        const listEl = document.getElementById('product-list');
+        try {
+            const res = await fetch(`${API}/products/product`, {
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
             });
+            if (!res.ok) throw new Error();
+            const products = await res.json();
 
-        // console.log("aaa" + JSON.stringify(productFetch));
+            if (!products.length) {
+                listEl.innerHTML = `
+                    <div class="empty-state" style="grid-column:1/-1">
+                        <div class="icon">📦</div>
+                        <p>Você ainda não cadastrou nenhum produto.</p>
+                        <a href="cadastro_produto.html" class="btn btn-primary">Cadastrar primeiro produto</a>
+                    </div>`;
+                return;
+            }
 
-    </script>
+            listEl.innerHTML = products.map(p => `
+                <div class="product-card">
+                    <h4>${p.name}</h4>
+                    <p class="desc">${p.description}</p>
+                    <p class="stock">Estoque: <strong>${p.quantity}</strong></p>
+                    <p class="price">R$ ${Number(p.price).toFixed(2)}</p>
+                    <p style="font-size:0.8rem;color:var(--text-muted);margin-top:4px">CEP: ${p.location}</p>
+                </div>
+            `).join('');
+        } catch (_) {
+            listEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><p>Erro ao carregar produtos.</p></div>';
+        }
+    }
 
-    <footer>
-        <p>JibLog &copy; 2024</p>
-    </footer>
+    loadProducts();
+</script>
 </body>
-
 </html>
-

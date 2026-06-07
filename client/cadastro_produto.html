@@ -1,191 +1,106 @@
 <!DOCTYPE html>
-<html>
-    <html lang="pt-br"> 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>JibLog</title>
-        <link rel="icon" type="image/x-icon" href="logo.png">
-    </head>
-</html>
-<style>
-    body{
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
-
-    header{
-        color: #fff;
-        background-color: #177757;
-        text-align: center;
-        padding: 20px;
-    }
-
-    nav{
-        display: flex;
-        justify-content: center;
-        background-color: #fff;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-    }
-
-        nav a{
-        margin: 0 15px;
-        text-decoration: none;
-        color: #177757;
-        font-weight: bold;
-        }
-
-        nav a:hover{
-        color: #0f5c3d;
-    }
-
-    main {
-        padding: 20px;
-        max-width: 600px; 
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: calc(100vh - 160px); 
-    }
-
-    form {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    footer{
-        background-color: #177757;
-        text-align: center;
-        padding: 10px;
-        position: relative;
-        bottom: 0;
-        width: 100%;
-    }
-
-    label{
-        font-weight: bold;
-        color: #333;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="number"],
-    input[type="password"]{
-        width: 95%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-    }
-
-    input[type="text"]:focus,
-    input[type="email"]:focus,
-    input[type="number"]:focus,
-    input[type="password"]:focus{
-        border-color: #177757;
-        outline: none;
-        box-shadow: 0 0 5px rgba(23, 119, 87, 0.5);
-    }
-
-    .button{
-        padding: 8px 5px;
-        background-color: #177757;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 16px;
-        transition: background-color 0.3s ease;
-        width: 150px;
-    }
-
-    .button:hover{
-        background-color: #0f5c3d;
-    }
-</style>
-
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Produto — JibLog</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-    <header>
-        <h1>JibLog</h1>
-        <img src="logo.png" alt="logo JibLog" width="170" > 
-    </header>
 
-    <script>
-        console.log(document.cookie)
-    </script>
+<header>
+    <img src="logo.png" alt="logo JibLog">
+    <h1>JibLog</h1>
+</header>
 
-    <nav>
-        <a href="index.html">Início</a>
-        <a id = "myaccount" href="conta.html">Minha Área</a>
-        <a id = "logout" href="login.html" onclick="logout()"> Logout</a>
-    </nav>
-    <main>
-        <h3>Cadastre seu produto: </h3>
-        <form id = "produtregister" onsubmit="productRegister()">
-            <label for="name"> Nome: </label>
-            <input type="text" name="product_name" id = "name">
-            <br><br>
-            <label for="description"> Descrição do produto: </label>
-            <input type="text" name="product_description" id="description">
-            <br><br>
-            <label for="price"> Preço: </label>
-            <input type="number" name="product_price" id="price">
-            <br><br>
-            <label for="location"> Localização: </label>
-            <input type="text" name="product_location" id="location">
-            <br><br>
-            <input type="submit" class="button" value="Cadastrar produto">
+<nav>
+    <a href="index.html">Início</a>
+    <a href="meus_produtos_owner.html">Meus Produtos</a>
+    <a href="conta.html" id="myaccount">Minha Área</a>
+    <a id="logout" href="#" class="nav-logout">Logout</a>
+</nav>
+
+<main class="centered">
+    <div class="form-card" style="max-width:520px">
+        <h2 class="form-title">Cadastrar produto</h2>
+
+        <div id="error-msg" class="alert alert-error" style="display:none"></div>
+        <div id="success-msg" class="alert alert-success" style="display:none"></div>
+
+        <form id="productForm">
+            <div class="form-group">
+                <label for="name">Nome do produto</label>
+                <input type="text" id="name" placeholder="Ex: Caixas de papelão" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Descrição</label>
+                <input type="text" id="description" placeholder="Descreva o produto" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Preço (R$)</label>
+                <input type="number" id="price" step="0.01" min="0" placeholder="0,00" required>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantidade em estoque</label>
+                <input type="number" id="quantity" min="0" placeholder="0" required>
+            </div>
+            <div class="form-group">
+                <label for="location">CEP de localização</label>
+                <input type="text" id="location" placeholder="00000000" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Cadastrar produto</button>
         </form>
-    </main>
-    <script>
-        function productRegister(){
-            event.preventDefault(); 
+    </div>
+</main>
 
-            let name = document.getElementById("name").value;
-            let description = document.getElementById("description").value;
-            let price = document.getElementById("price").value;
-            let location = document.getElementById("location").value;
+<footer>
+    <p>JibLog &copy; 2024</p>
+</footer>
 
-            const data = {
-                name: name,
-                description: description,
-                price: price,
-                location: location
-            };
+<script src="utils.js"></script>
+<script>
+    if (!isLoggedIn()) window.location.href = 'login.html';
+    setupNav();
 
-            const url = "http://localhost:3030/api/products/create";
-                fetch(url, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    credentials: "include",
-                    body: JSON.stringify(data),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert("Produto criado com sucesso");    
-                }
-            );
+    document.getElementById('productForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const errorEl   = document.getElementById('error-msg');
+        const successEl = document.getElementById('success-msg');
+        errorEl.style.display = 'none';
+        successEl.style.display = 'none';
+
+        const data = {
+            name:        document.getElementById('name').value,
+            description: document.getElementById('description').value,
+            price:       document.getElementById('price').value,
+            quantity:    document.getElementById('quantity').value,
+            location:    document.getElementById('location').value,
+        };
+
+        try {
+            const res = await fetch(`${API}/products/create`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(data)
+            });
+
+            if (res.ok) {
+                successEl.textContent = 'Produto cadastrado com sucesso!';
+                successEl.style.display = 'block';
+                document.getElementById('productForm').reset();
+                setTimeout(() => { window.location.href = 'meus_produtos_owner.html'; }, 1500);
+            } else {
+                const msg = await res.json();
+                errorEl.textContent = msg || 'Erro ao cadastrar produto.';
+                errorEl.style.display = 'block';
+            }
+        } catch (_) {
+            errorEl.textContent = 'Não foi possível conectar ao servidor.';
+            errorEl.style.display = 'block';
         }
-    </script>
-    <footer>
-        <p>JibLog &copy; 2024</p>
-    </footer>
+    });
+</script>
 </body>
-    
 </html>
-
